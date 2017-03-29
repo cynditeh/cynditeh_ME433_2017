@@ -54,20 +54,20 @@ int main() {
     DDPCONbits.JTAGEN = 0;
 
     // do your TRIS and LAT commands here
-    TRISBbits.TRISB4 = 1;
+    TRISBbits.TRISB4 = 1;   //Set pin RB4 as an input pin
     
-    TRISAbits.TRISA4 = 0;
-    LATAbits.LATA4 = 1;
+    TRISAbits.TRISA4 = 0;   //Set pin RA4 as an output pin
+    LATAbits.LATA4 = 1;     //Initialise LED to be HIGH
     
     __builtin_enable_interrupts();
 
     while(1) {
-	   /* _CP0_SET_COUNT(0);
-        while (_CP0_GET_COUNT()<1000){
+	    _CP0_SET_COUNT(0);
+        while (_CP0_GET_COUNT()<12000){  // 0.5ms delay = 0.5ms*24MHz
         // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		  // remember the core timer runs at half the CPU speed
-        ;
+        ;   //delay for 0.5ms
         }
-        LATAbits.LATA4 = !LATAbits.LATA4;*/
+        LATAbits.LATA4 = !LATAbits.LATA4;   //Invert pin RA4
     }
 }
