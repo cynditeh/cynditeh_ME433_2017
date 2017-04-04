@@ -14236,6 +14236,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="U$2" gate="G$1" pin="8.VSS"/>
 <pinref part="GND5" gate="1" pin="GND"/>
 <wire x1="896.62" y1="711.2" x2="891.54" y2="711.2" width="0.1524" layer="91"/>
+<label x="891.54" y="711.2" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="C4" gate="G$1" pin="2"/>
@@ -14335,7 +14336,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="858.52" y="822.96" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="MCLR" class="0">
 <segment>
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="U$2" gate="G$1" pin="1.MCLR"/>
@@ -14447,11 +14448,12 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="853.44" y="774.7" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$18" class="0">
+<net name="VCAP" class="0">
 <segment>
 <pinref part="U$2" gate="G$1" pin="20.VCAP"/>
 <pinref part="C6" gate="G$1" pin="+"/>
 <wire x1="937.26" y1="706.12" x2="944.88" y2="706.12" width="0.1524" layer="91"/>
+<label x="937.26" y="706.12" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B13" class="0">
@@ -14490,37 +14492,41 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="853.44" y="782.32" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$4" class="0">
+<net name="OSC1" class="0">
 <segment>
 <pinref part="U$3" gate="G$1" pin="1.OCS1"/>
 <wire x1="866.14" y1="711.2" x2="881.38" y2="711.2" width="0.1524" layer="91"/>
 <wire x1="881.38" y1="711.2" x2="881.38" y2="706.12" width="0.1524" layer="91"/>
 <pinref part="U$2" gate="G$1" pin="9.OSC1"/>
 <wire x1="881.38" y1="706.12" x2="896.62" y2="706.12" width="0.1524" layer="91"/>
+<label x="891.54" y="703.58" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$5" class="0">
+<net name="OSC2" class="0">
 <segment>
 <pinref part="U$3" gate="G$1" pin="3.OCS2"/>
 <pinref part="U$2" gate="G$1" pin="10.OSC2"/>
 <wire x1="866.14" y1="701.04" x2="896.62" y2="701.04" width="0.1524" layer="91"/>
+<label x="891.54" y="698.5" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$7" class="0">
+<net name="D-" class="0">
 <segment>
 <pinref part="U$6" gate="G$1" pin="2.D-"/>
 <pinref part="U$2" gate="G$1" pin="22.D-"/>
 <wire x1="993.14" y1="716.28" x2="937.26" y2="716.28" width="0.1524" layer="91"/>
+<label x="937.26" y="716.28" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$8" class="0">
+<net name="D+" class="0">
 <segment>
 <pinref part="U$6" gate="G$1" pin="3.D+"/>
 <pinref part="U$2" gate="G$1" pin="21.D+"/>
 <wire x1="993.14" y1="711.2" x2="937.26" y2="711.2" width="0.1524" layer="91"/>
+<label x="937.26" y="711.2" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$9" class="0">
+<net name="USBID" class="0">
 <segment>
 <pinref part="U$6" gate="G$1" pin="4.ID"/>
 <wire x1="993.14" y1="706.12" x2="977.9" y2="706.12" width="0.1524" layer="91"/>
@@ -14576,14 +14582,14 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="P+5" gate="1" pin="+5V"/>
 </segment>
 </net>
-<net name="N$10" class="0">
+<net name="PEGD1" class="0">
 <segment>
 <pinref part="U$8" gate="G$1" pin="4.PGEDX"/>
 <pinref part="U$2" gate="G$1" pin="4.PGED1"/>
 <wire x1="838.2" y1="731.52" x2="896.62" y2="731.52" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$11" class="0">
+<net name="PEGC1" class="0">
 <segment>
 <pinref part="U$8" gate="G$1" pin="5.PGECX"/>
 <pinref part="U$2" gate="G$1" pin="5.PGEC1"/>

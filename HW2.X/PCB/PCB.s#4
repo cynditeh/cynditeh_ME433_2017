@@ -10902,13 +10902,15 @@ diameter 5 mm, grid 2.54 mm</description>
 <text x="-8.509" y="-0.635" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
 </package>
 <package name="CRYSTAL">
-<pad name="2" x="0" y="0" drill="1.3"/>
-<pad name="1" x="2.5" y="0" drill="1.3"/>
-<pad name="3" x="-2.5" y="0" drill="1.3"/>
 <wire x1="4" y1="1.5" x2="4" y2="-1.5" width="0.127" layer="21"/>
 <wire x1="4" y1="-1.5" x2="-4" y2="-1.5" width="0.127" layer="21"/>
 <wire x1="-4" y1="-1.5" x2="-4" y2="1.5" width="0.127" layer="21"/>
 <wire x1="-4" y1="1.5" x2="4" y2="1.5" width="0.127" layer="21"/>
+<text x="-6.35" y="2.54" size="1.27" layer="21">&gt;NAME</text>
+<text x="2.54" y="2.54" size="1.27" layer="21">&gt;VALUE</text>
+<pad name="2" x="0" y="0" drill="1" diameter="1.9304"/>
+<pad name="1" x="-2.5" y="0" drill="1" diameter="1.9304"/>
+<pad name="3" x="2.5" y="0" drill="1" diameter="1.9304"/>
 </package>
 <package name="SWITCH">
 <wire x1="3" y1="3" x2="3" y2="-3" width="0.127" layer="21"/>
@@ -10917,6 +10919,11 @@ diameter 5 mm, grid 2.54 mm</description>
 <wire x1="-3" y1="3" x2="3" y2="3" width="0.127" layer="21"/>
 <pad name="1" x="2.5" y="0" drill="1"/>
 <pad name="2" x="-2.5" y="0" drill="1"/>
+<wire x1="-1.27" y1="0" x2="-0.635" y2="0" width="0.127" layer="21"/>
+<wire x1="0.635" y1="0" x2="1.27" y2="0" width="0.127" layer="21"/>
+<text x="-6.35" y="3.81" size="1.27" layer="21">&gt;NAME</text>
+<text x="1.27" y="3.81" size="1.27" layer="21">&gt;VALUE</text>
+<wire x1="-0.635" y1="0" x2="0.635" y2="1.27" width="0.127" layer="21"/>
 </package>
 <package name="USB-MB-H">
 <description>&lt;b&gt;USB Series Mini-B Hole Mounted&lt;/b&gt;</description>
@@ -10955,56 +10962,6 @@ diameter 5 mm, grid 2.54 mm</description>
 &lt;p&gt;Example device(s):
 &lt;ul&gt;&lt;li&gt;CONN_08&lt;/li&gt;
 &lt;/ul&gt;&lt;/p&gt;</description>
-<wire x1="14.605" y1="1.27" x2="15.875" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="15.875" y1="1.27" x2="16.51" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="16.51" y1="-0.635" x2="15.875" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="11.43" y1="0.635" x2="12.065" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="12.065" y1="1.27" x2="13.335" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="13.335" y1="1.27" x2="13.97" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="13.97" y1="-0.635" x2="13.335" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="13.335" y1="-1.27" x2="12.065" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="12.065" y1="-1.27" x2="11.43" y2="-0.635" width="0.2032" layer="21"/>
-<wire x1="14.605" y1="1.27" x2="13.97" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="13.97" y1="-0.635" x2="14.605" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="15.875" y1="-1.27" x2="14.605" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="6.985" y1="1.27" x2="8.255" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="8.255" y1="1.27" x2="8.89" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="8.89" y1="-0.635" x2="8.255" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="8.89" y1="0.635" x2="9.525" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="9.525" y1="1.27" x2="10.795" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="10.795" y1="1.27" x2="11.43" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="11.43" y1="-0.635" x2="10.795" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="10.795" y1="-1.27" x2="9.525" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="9.525" y1="-1.27" x2="8.89" y2="-0.635" width="0.2032" layer="21"/>
-<wire x1="3.81" y1="0.635" x2="4.445" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="4.445" y1="1.27" x2="5.715" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="5.715" y1="1.27" x2="6.35" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="6.35" y1="-0.635" x2="5.715" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="5.715" y1="-1.27" x2="4.445" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="4.445" y1="-1.27" x2="3.81" y2="-0.635" width="0.2032" layer="21"/>
-<wire x1="6.985" y1="1.27" x2="6.35" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="6.35" y1="-0.635" x2="6.985" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="8.255" y1="-1.27" x2="6.985" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="-0.635" y1="1.27" x2="0.635" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="0.635" y1="1.27" x2="1.27" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="1.27" y1="-0.635" x2="0.635" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="1.27" y1="0.635" x2="1.905" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="1.905" y1="1.27" x2="3.175" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="3.175" y1="1.27" x2="3.81" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="3.81" y1="-0.635" x2="3.175" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="3.175" y1="-1.27" x2="1.905" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="1.905" y1="-1.27" x2="1.27" y2="-0.635" width="0.2032" layer="21"/>
-<wire x1="-1.27" y1="0.635" x2="-1.27" y2="-0.635" width="0.2032" layer="21"/>
-<wire x1="-0.635" y1="1.27" x2="-1.27" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="-1.27" y1="-0.635" x2="-0.635" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="0.635" y1="-1.27" x2="-0.635" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="17.145" y1="1.27" x2="18.415" y2="1.27" width="0.2032" layer="21"/>
-<wire x1="18.415" y1="1.27" x2="19.05" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="19.05" y1="0.635" x2="19.05" y2="-0.635" width="0.2032" layer="21"/>
-<wire x1="19.05" y1="-0.635" x2="18.415" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="17.145" y1="1.27" x2="16.51" y2="0.635" width="0.2032" layer="21"/>
-<wire x1="16.51" y1="-0.635" x2="17.145" y2="-1.27" width="0.2032" layer="21"/>
-<wire x1="18.415" y1="-1.27" x2="17.145" y2="-1.27" width="0.2032" layer="21"/>
 <pad name="1" x="0" y="0" drill="1.016" diameter="1.8796" rot="R90"/>
 <pad name="2" x="2.54" y="0" drill="1.016" diameter="1.8796" rot="R90"/>
 <pad name="3" x="5.08" y="0" drill="1.016" diameter="1.8796" rot="R90"/>
@@ -11013,16 +10970,8 @@ diameter 5 mm, grid 2.54 mm</description>
 <pad name="6" x="12.7" y="0" drill="1.016" diameter="1.8796" rot="R90"/>
 <pad name="7" x="15.24" y="0" drill="1.016" diameter="1.8796" rot="R90"/>
 <pad name="8" x="17.78" y="0" drill="1.016" diameter="1.8796" rot="R90"/>
-<rectangle x1="14.986" y1="-0.254" x2="15.494" y2="0.254" layer="51"/>
-<rectangle x1="12.446" y1="-0.254" x2="12.954" y2="0.254" layer="51"/>
-<rectangle x1="9.906" y1="-0.254" x2="10.414" y2="0.254" layer="51"/>
-<rectangle x1="7.366" y1="-0.254" x2="7.874" y2="0.254" layer="51"/>
-<rectangle x1="4.826" y1="-0.254" x2="5.334" y2="0.254" layer="51"/>
-<rectangle x1="2.286" y1="-0.254" x2="2.794" y2="0.254" layer="51"/>
-<rectangle x1="-0.254" y1="-0.254" x2="0.254" y2="0.254" layer="51"/>
-<rectangle x1="17.526" y1="-0.254" x2="18.034" y2="0.254" layer="51"/>
-<text x="-1.27" y="1.397" size="0.6096" layer="25" font="vector" ratio="20">&gt;NAME</text>
-<text x="-1.27" y="-2.032" size="0.6096" layer="27" font="vector" ratio="20">&gt;VALUE</text>
+<text x="-1.27" y="-2.413" size="0.6096" layer="25" font="vector" ratio="20">&gt;NAME</text>
+<text x="-1.27" y="-3.302" size="0.6096" layer="27" font="vector" ratio="20">&gt;VALUE</text>
 </package>
 <package name="1X08_LOCK">
 <description>&lt;h3&gt;Plated Through Hole -8 Pin Locking Footprint&lt;/h3&gt;
@@ -14131,8 +14080,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="+3V7" library="ME433" deviceset="+3V3" device=""/>
 <part name="U$3" library="ME433" deviceset="CRYRES" device=""/>
 <part name="GND10" library="ME433" deviceset="GND" device=""/>
-<part name="U$4" library="ME433" deviceset="SWITCH" device=""/>
-<part name="U$5" library="ME433" deviceset="SWITCH" device=""/>
+<part name="USER" library="ME433" deviceset="SWITCH" device=""/>
+<part name="RESET" library="ME433" deviceset="SWITCH" device=""/>
 <part name="GND11" library="ME433" deviceset="GND" device=""/>
 <part name="U$6" library="ME433" deviceset="USB_MB" device=""/>
 <part name="GND12" library="ME433" deviceset="GND" device=""/>
@@ -14149,6 +14098,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="P+5" library="ME433" deviceset="+5V" device=""/>
 <part name="U$7" library="ME433" deviceset="SLIDESWITCH" device=""/>
 <part name="U$8" library="ME433" deviceset="PICKIT3" device=""/>
+<part name="GND16" library="ME433" deviceset="GND" device=""/>
+<part name="GND17" library="ME433" deviceset="GND" device=""/>
+<part name="GND18" library="ME433" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -14158,9 +14110,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="R1" gate="G$1" x="876.3" y="756.92" rot="R90"/>
 <instance part="R2" gate="G$1" x="830.58" y="701.04" rot="R90"/>
 <instance part="R3" gate="G$1" x="1023.62" y="797.56"/>
-<instance part="R4" gate="G$1" x="883.92" y="690.88"/>
+<instance part="R4" gate="G$1" x="871.22" y="690.88"/>
 <instance part="LED1" gate="G$1" x="1008.38" y="797.56" rot="R90"/>
-<instance part="LED2" gate="G$1" x="871.22" y="690.88" rot="MR90"/>
+<instance part="LED2" gate="G$1" x="886.46" y="690.88" rot="MR90"/>
 <instance part="GND1" gate="1" x="858.52" y="688.34"/>
 <instance part="GND2" gate="1" x="1036.32" y="795.02"/>
 <instance part="U$1" gate="G$1" x="944.88" y="797.56"/>
@@ -14186,17 +14138,17 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="+3V7" gate="G$1" x="955.04" y="723.9"/>
 <instance part="U$3" gate="G$1" x="858.52" y="706.12"/>
 <instance part="GND10" gate="1" x="871.22" y="703.58"/>
-<instance part="U$4" gate="G$1" x="830.58" y="685.8" rot="R90"/>
-<instance part="U$5" gate="G$1" x="876.3" y="744.22" rot="R90"/>
+<instance part="USER" gate="G$1" x="830.58" y="685.8" rot="R90"/>
+<instance part="RESET" gate="G$1" x="876.3" y="744.22" rot="R90"/>
 <instance part="GND11" gate="1" x="830.58" y="675.64"/>
 <instance part="U$6" gate="G$1" x="1003.3" y="711.2"/>
 <instance part="GND12" gate="1" x="988.06" y="698.5"/>
-<instance part="J1" gate="G$1" x="833.12" y="767.08"/>
-<instance part="J2" gate="G$1" x="866.14" y="767.08" rot="MR0"/>
-<instance part="+3V8" gate="G$1" x="848.36" y="764.54"/>
-<instance part="GND13" gate="1" x="845.82" y="756.92"/>
-<instance part="GND14" gate="1" x="855.98" y="756.92"/>
-<instance part="P+1" gate="1" x="853.44" y="764.54"/>
+<instance part="J1" gate="G$1" x="822.96" y="772.16"/>
+<instance part="J2" gate="G$1" x="863.6" y="772.16" rot="MR0"/>
+<instance part="+3V8" gate="G$1" x="838.2" y="769.62"/>
+<instance part="GND13" gate="1" x="835.66" y="762"/>
+<instance part="GND14" gate="1" x="853.44" y="762"/>
+<instance part="P+1" gate="1" x="850.9" y="769.62"/>
 <instance part="+3V9" gate="G$1" x="843.28" y="744.22"/>
 <instance part="GND15" gate="1" x="843.28" y="734.06"/>
 <instance part="P+2" gate="1" x="896.62" y="802.64"/>
@@ -14204,6 +14156,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="P+5" gate="1" x="909.32" y="800.1"/>
 <instance part="U$7" gate="G$1" x="863.6" y="802.64" rot="R270"/>
 <instance part="U$8" gate="G$1" x="830.58" y="736.6" rot="MR0"/>
+<instance part="GND16" gate="1" x="922.02" y="777.24"/>
+<instance part="GND17" gate="1" x="965.2" y="777.24"/>
+<instance part="GND18" gate="1" x="975.36" y="777.24"/>
 </instances>
 <busses>
 </busses>
@@ -14258,7 +14213,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="J1" gate="G$1" pin="2"/>
 <pinref part="+3V8" gate="G$1" pin="+3V3"/>
-<wire x1="838.2" y1="762" x2="848.36" y2="762" width="0.1524" layer="91"/>
+<wire x1="828.04" y1="767.08" x2="838.2" y2="767.08" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U$8" gate="G$1" pin="2.VDD"/>
@@ -14273,17 +14228,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="1028.7" y1="797.56" x2="1036.32" y2="797.56" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="1.GND"/>
 <pinref part="GND3" gate="1" pin="GND"/>
+<pinref part="U$1" gate="G$1" pin="1.GND"/>
 <wire x1="944.88" y1="784.86" x2="944.88" y2="777.24" width="0.1524" layer="91"/>
-<pinref part="C2" gate="G$1" pin="2"/>
-<wire x1="922.02" y1="784.86" x2="944.88" y2="784.86" width="0.1524" layer="91"/>
-<junction x="944.88" y="784.86"/>
-<pinref part="C1" gate="G$1" pin="2"/>
-<wire x1="965.2" y1="784.86" x2="944.88" y2="784.86" width="0.1524" layer="91"/>
-<pinref part="C5" gate="G$1" pin="-"/>
-<wire x1="975.36" y1="784.86" x2="965.2" y2="784.86" width="0.1524" layer="91"/>
-<junction x="965.2" y="784.86"/>
 </segment>
 <segment>
 <pinref part="U$2" gate="G$1" pin="8.VSS"/>
@@ -14320,11 +14267,11 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
-<pinref part="U$5" gate="G$1" pin="1"/>
+<pinref part="RESET" gate="G$1" pin="1"/>
 <wire x1="876.3" y1="736.6" x2="876.3" y2="739.14" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="1"/>
+<pinref part="USER" gate="G$1" pin="1"/>
 <pinref part="GND11" gate="1" pin="GND"/>
 <wire x1="830.58" y1="680.72" x2="830.58" y2="678.18" width="0.1524" layer="91"/>
 </segment>
@@ -14336,22 +14283,37 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="J1" gate="G$1" pin="1"/>
 <pinref part="GND13" gate="1" pin="GND"/>
-<wire x1="838.2" y1="759.46" x2="845.82" y2="759.46" width="0.1524" layer="91"/>
+<wire x1="828.04" y1="764.54" x2="835.66" y2="764.54" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="1"/>
-<wire x1="861.06" y1="759.46" x2="855.98" y2="759.46" width="0.1524" layer="91"/>
+<wire x1="858.52" y1="764.54" x2="853.44" y2="764.54" width="0.1524" layer="91"/>
 <pinref part="GND14" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="GND1" gate="1" pin="GND"/>
-<pinref part="LED2" gate="G$1" pin="C"/>
-<wire x1="858.52" y1="690.88" x2="866.14" y2="690.88" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U$8" gate="G$1" pin="3.VSS"/>
 <pinref part="GND15" gate="1" pin="GND"/>
 <wire x1="838.2" y1="736.6" x2="843.28" y2="736.6" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C2" gate="G$1" pin="2"/>
+<pinref part="GND16" gate="1" pin="GND"/>
+<wire x1="922.02" y1="784.86" x2="922.02" y2="779.78" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C1" gate="G$1" pin="2"/>
+<pinref part="GND17" gate="1" pin="GND"/>
+<wire x1="965.2" y1="784.86" x2="965.2" y2="779.78" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C5" gate="G$1" pin="-"/>
+<pinref part="GND18" gate="1" pin="GND"/>
+<wire x1="975.36" y1="784.86" x2="975.36" y2="779.78" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND1" gate="1" pin="GND"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="858.52" y1="690.88" x2="866.14" y2="690.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -14379,7 +14341,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="U$2" gate="G$1" pin="1.MCLR"/>
 <wire x1="876.3" y1="751.84" x2="896.62" y2="751.84" width="0.1524" layer="91"/>
 <wire x1="896.62" y1="751.84" x2="896.62" y2="746.76" width="0.1524" layer="91"/>
-<pinref part="U$5" gate="G$1" pin="2"/>
+<pinref part="RESET" gate="G$1" pin="2"/>
 <wire x1="876.3" y1="751.84" x2="876.3" y2="749.3" width="0.1524" layer="91"/>
 <junction x="876.3" y="751.84"/>
 <pinref part="U$8" gate="G$1" pin="1.MCLR"/>
@@ -14396,8 +14358,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J1" gate="G$1" pin="8"/>
-<wire x1="838.2" y1="777.24" x2="843.28" y2="777.24" width="0.1524" layer="91"/>
-<label x="843.28" y="777.24" size="1.778" layer="95"/>
+<wire x1="828.04" y1="782.32" x2="833.12" y2="782.32" width="0.1524" layer="91"/>
+<label x="833.12" y="782.32" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="A1" class="0">
@@ -14408,8 +14370,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J1" gate="G$1" pin="7"/>
-<wire x1="838.2" y1="774.7" x2="843.28" y2="774.7" width="0.1524" layer="91"/>
-<label x="843.28" y="774.7" size="1.778" layer="95"/>
+<wire x1="828.04" y1="779.78" x2="833.12" y2="779.78" width="0.1524" layer="91"/>
+<label x="833.12" y="779.78" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B2" class="0">
@@ -14420,8 +14382,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J1" gate="G$1" pin="6"/>
-<wire x1="838.2" y1="772.16" x2="843.28" y2="772.16" width="0.1524" layer="91"/>
-<label x="843.28" y="772.16" size="1.778" layer="95"/>
+<wire x1="828.04" y1="777.24" x2="833.12" y2="777.24" width="0.1524" layer="91"/>
+<label x="833.12" y="777.24" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B3" class="0">
@@ -14432,8 +14394,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J1" gate="G$1" pin="5"/>
-<wire x1="838.2" y1="769.62" x2="843.28" y2="769.62" width="0.1524" layer="91"/>
-<label x="843.28" y="769.62" size="1.778" layer="95"/>
+<wire x1="828.04" y1="774.7" x2="833.12" y2="774.7" width="0.1524" layer="91"/>
+<label x="833.12" y="774.7" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$12" class="0">
@@ -14441,7 +14403,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="U$2" gate="G$1" pin="11.B4"/>
 <pinref part="R2" gate="G$1" pin="1"/>
 <wire x1="896.62" y1="695.96" x2="830.58" y2="695.96" width="0.1524" layer="91"/>
-<pinref part="U$4" gate="G$1" pin="2"/>
+<pinref part="USER" gate="G$1" pin="2"/>
 <wire x1="830.58" y1="695.96" x2="830.58" y2="690.88" width="0.1524" layer="91"/>
 <junction x="830.58" y="695.96"/>
 </segment>
@@ -14449,8 +14411,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <net name="A4" class="0">
 <segment>
 <pinref part="J1" gate="G$1" pin="3"/>
-<wire x1="838.2" y1="764.54" x2="843.28" y2="764.54" width="0.1524" layer="91"/>
-<label x="843.28" y="764.54" size="1.778" layer="95"/>
+<wire x1="828.04" y1="769.62" x2="833.12" y2="769.62" width="0.1524" layer="91"/>
+<label x="833.12" y="769.62" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B7" class="0">
@@ -14461,8 +14423,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="3"/>
-<wire x1="861.06" y1="764.54" x2="858.52" y2="764.54" width="0.1524" layer="91"/>
-<label x="855.98" y="764.54" size="1.778" layer="95"/>
+<wire x1="858.52" y1="769.62" x2="855.98" y2="769.62" width="0.1524" layer="91"/>
+<label x="853.44" y="769.62" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B8" class="0">
@@ -14473,8 +14435,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="4"/>
-<wire x1="861.06" y1="767.08" x2="855.98" y2="767.08" width="0.1524" layer="91"/>
-<label x="855.98" y="767.08" size="1.778" layer="95"/>
+<wire x1="858.52" y1="772.16" x2="853.44" y2="772.16" width="0.1524" layer="91"/>
+<label x="853.44" y="772.16" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B9" class="0">
@@ -14485,8 +14447,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="5"/>
-<wire x1="861.06" y1="769.62" x2="855.98" y2="769.62" width="0.1524" layer="91"/>
-<label x="855.98" y="769.62" size="1.778" layer="95"/>
+<wire x1="858.52" y1="774.7" x2="853.44" y2="774.7" width="0.1524" layer="91"/>
+<label x="853.44" y="774.7" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$18" class="0">
@@ -14504,8 +14466,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="6"/>
-<wire x1="861.06" y1="772.16" x2="855.98" y2="772.16" width="0.1524" layer="91"/>
-<label x="855.98" y="772.16" size="1.778" layer="95"/>
+<wire x1="858.52" y1="777.24" x2="853.44" y2="777.24" width="0.1524" layer="91"/>
+<label x="853.44" y="777.24" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B14" class="0">
@@ -14516,8 +14478,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="7"/>
-<wire x1="861.06" y1="774.7" x2="855.98" y2="774.7" width="0.1524" layer="91"/>
-<label x="855.98" y="774.7" size="1.778" layer="95"/>
+<wire x1="858.52" y1="779.78" x2="853.44" y2="779.78" width="0.1524" layer="91"/>
+<label x="853.44" y="779.78" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B15" class="0">
@@ -14528,8 +14490,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="8"/>
-<wire x1="861.06" y1="777.24" x2="855.98" y2="777.24" width="0.1524" layer="91"/>
-<label x="855.98" y="777.24" size="1.778" layer="95"/>
+<wire x1="858.52" y1="782.32" x2="853.44" y2="782.32" width="0.1524" layer="91"/>
+<label x="853.44" y="782.32" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -14575,14 +14537,14 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <net name="B4" class="0">
 <segment>
 <pinref part="J1" gate="G$1" pin="4"/>
-<wire x1="838.2" y1="767.08" x2="843.28" y2="767.08" width="0.1524" layer="91"/>
-<label x="843.28" y="767.08" size="1.778" layer="95"/>
+<wire x1="828.04" y1="772.16" x2="833.12" y2="772.16" width="0.1524" layer="91"/>
+<label x="833.12" y="772.16" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="+5V" class="0">
 <segment>
 <pinref part="J2" gate="G$1" pin="2"/>
-<wire x1="861.06" y1="762" x2="853.44" y2="762" width="0.1524" layer="91"/>
+<wire x1="858.52" y1="767.08" x2="850.9" y2="767.08" width="0.1524" layer="91"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
 </segment>
 <segment>
@@ -14595,7 +14557,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="U$2" gate="G$1" pin="15.VBUS"/>
 <wire x1="937.26" y1="680.72" x2="965.2" y2="680.72" width="0.1524" layer="91"/>
-<label x="960.12" y="680.72" size="1.778" layer="95"/>
+<label x="955.04" y="680.72" size="1.778" layer="95"/>
 <pinref part="P+4" gate="1" pin="+5V"/>
 </segment>
 <segment>
@@ -14607,20 +14569,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <junction x="927.1" y="797.56"/>
 <label x="909.32" y="800.1" size="1.778" layer="95"/>
 <pinref part="P+5" gate="1" pin="+5V"/>
-</segment>
-</net>
-<net name="N$2" class="0">
-<segment>
-<pinref part="R4" gate="G$1" pin="2"/>
-<pinref part="U$2" gate="G$1" pin="12.A4"/>
-<wire x1="889" y1="690.88" x2="896.62" y2="690.88" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$6" class="0">
-<segment>
-<pinref part="LED2" gate="G$1" pin="A"/>
-<pinref part="R4" gate="G$1" pin="1"/>
-<wire x1="873.76" y1="690.88" x2="878.84" y2="690.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$10" class="0">
@@ -14635,6 +14583,20 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="U$8" gate="G$1" pin="5.PGECX"/>
 <pinref part="U$2" gate="G$1" pin="5.PGEC1"/>
 <wire x1="838.2" y1="726.44" x2="896.62" y2="726.44" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="LED2" gate="G$1" pin="C"/>
+<wire x1="876.3" y1="690.88" x2="881.38" y2="690.88" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$6" class="0">
+<segment>
+<pinref part="LED2" gate="G$1" pin="A"/>
+<pinref part="U$2" gate="G$1" pin="12.A4"/>
+<wire x1="889" y1="690.88" x2="896.62" y2="690.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
