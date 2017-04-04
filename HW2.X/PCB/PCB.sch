@@ -14398,21 +14398,17 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="833.12" y="774.7" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$12" class="0">
-<segment>
-<pinref part="U$2" gate="G$1" pin="11.B4"/>
-<pinref part="R2" gate="G$1" pin="1"/>
-<wire x1="896.62" y1="695.96" x2="830.58" y2="695.96" width="0.1524" layer="91"/>
-<pinref part="USER" gate="G$1" pin="2"/>
-<wire x1="830.58" y1="695.96" x2="830.58" y2="690.88" width="0.1524" layer="91"/>
-<junction x="830.58" y="695.96"/>
-</segment>
-</net>
 <net name="A4" class="0">
 <segment>
 <pinref part="J1" gate="G$1" pin="3"/>
 <wire x1="828.04" y1="769.62" x2="833.12" y2="769.62" width="0.1524" layer="91"/>
 <label x="833.12" y="769.62" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="LED2" gate="G$1" pin="A"/>
+<pinref part="U$2" gate="G$1" pin="12.A4"/>
+<wire x1="889" y1="690.88" x2="896.62" y2="690.88" width="0.1524" layer="91"/>
+<label x="891.54" y="690.88" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="B7" class="0">
@@ -14540,6 +14536,15 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="828.04" y1="772.16" x2="833.12" y2="772.16" width="0.1524" layer="91"/>
 <label x="833.12" y="772.16" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="11.B4"/>
+<pinref part="R2" gate="G$1" pin="1"/>
+<wire x1="896.62" y1="695.96" x2="830.58" y2="695.96" width="0.1524" layer="91"/>
+<pinref part="USER" gate="G$1" pin="2"/>
+<wire x1="830.58" y1="695.96" x2="830.58" y2="690.88" width="0.1524" layer="91"/>
+<junction x="830.58" y="695.96"/>
+<label x="891.54" y="695.96" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="+5V" class="0">
 <segment>
@@ -14590,13 +14595,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="R4" gate="G$1" pin="2"/>
 <pinref part="LED2" gate="G$1" pin="C"/>
 <wire x1="876.3" y1="690.88" x2="881.38" y2="690.88" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$6" class="0">
-<segment>
-<pinref part="LED2" gate="G$1" pin="A"/>
-<pinref part="U$2" gate="G$1" pin="12.A4"/>
-<wire x1="889" y1="690.88" x2="896.62" y2="690.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

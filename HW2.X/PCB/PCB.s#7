@@ -11915,8 +11915,8 @@ Holes are offset 0.005" from center, locking pins in place during soldering.
 <wire x1="-4.5" y1="-2.5" x2="-4.5" y2="2.5" width="0.127" layer="21"/>
 <wire x1="-4.5" y1="2.5" x2="4.5" y2="2.5" width="0.127" layer="21"/>
 <wire x1="4.5" y1="2.5" x2="4.5" y2="-2.5" width="0.127" layer="21"/>
-<hole x="-4" y="0" drill="1"/>
-<hole x="4" y="0" drill="1"/>
+<pad name="S1" x="-4" y="0" drill="1"/>
+<pad name="S2" x="4" y="0" drill="1"/>
 </package>
 </packages>
 <symbols>
@@ -12091,7 +12091,7 @@ Holes are offset 0.005" from center, locking pins in place during soldering.
 <symbol name="SLIDERSWITCH">
 <pin name="2.VBUS" x="-12.7" y="0" length="middle"/>
 <pin name="1.5V" x="2.54" y="15.24" length="middle" rot="R270"/>
-<pin name="3.GND??" x="2.54" y="-15.24" length="middle" rot="R90"/>
+<pin name="3." x="2.54" y="-15.24" length="middle" rot="R90"/>
 <wire x1="-7.62" y1="0" x2="0" y2="10.16" width="0.254" layer="94"/>
 </symbol>
 </symbols>
@@ -14585,7 +14585,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <connects>
 <connect gate="G$1" pin="1.5V" pad="1"/>
 <connect gate="G$1" pin="2.VBUS" pad="2"/>
-<connect gate="G$1" pin="3.GND??" pad="3"/>
+<connect gate="G$1" pin="3." pad="3"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -14650,8 +14650,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="PICKIT3" library="ME433" deviceset="CONN_05" device=""/>
 <part name="+3V9" library="ME433" deviceset="+3V3" device=""/>
 <part name="GND15" library="ME433" deviceset="GND" device=""/>
-<part name="U$7" library="ME433" deviceset="SLIDESWITCH" device=""/>
 <part name="P+2" library="ME433" deviceset="+5V" device=""/>
+<part name="U$7" library="ME433" deviceset="SLIDESWITCH" device=""/>
+<part name="P+3" library="ME433" deviceset="+5V" device=""/>
+<part name="P+4" library="ME433" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -14703,8 +14705,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="PICKIT3" gate="G$1" x="838.2" y="734.06" rot="MR180"/>
 <instance part="+3V9" gate="G$1" x="855.98" y="739.14"/>
 <instance part="GND15" gate="1" x="855.98" y="731.52"/>
-<instance part="U$7" gate="G$1" x="868.68" y="805.18" rot="R270"/>
-<instance part="P+2" gate="1" x="899.16" y="805.18"/>
+<instance part="P+2" gate="1" x="896.62" y="802.64"/>
+<instance part="U$7" gate="G$1" x="866.931309375" y="802.705765625" rot="R270"/>
+<instance part="P+3" gate="1" x="980.44" y="723.9"/>
+<instance part="P+4" gate="1" x="965.2" y="683.26"/>
 </instances>
 <busses>
 </busses>
@@ -14873,19 +14877,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="909.32" y="800.1" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$6" gate="G$1" pin="1.VBUS"/>
-<wire x1="993.14" y1="721.36" x2="980.44" y2="721.36" width="0.1524" layer="91"/>
-<label x="980.44" y="721.36" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="U$2" gate="G$1" pin="15.VBUS"/>
-<wire x1="937.26" y1="680.72" x2="965.2" y2="680.72" width="0.1524" layer="91"/>
-<label x="960.12" y="680.72" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U$7" gate="G$1" pin="2.VBUS"/>
-<wire x1="868.68" y1="817.88" x2="868.68" y2="828.04" width="0.1524" layer="91"/>
-<label x="868.68" y="828.04" size="1.778" layer="95"/>
+<wire x1="866.931309375" y1="815.405765625" x2="866.14" y2="815.405765625" width="0.1524" layer="91"/>
+<wire x1="866.14" y1="815.405765625" x2="866.14" y2="822.96" width="0.1524" layer="91"/>
+<label x="866.14" y="822.96" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -15123,7 +15118,20 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="U$7" gate="G$1" pin="1.5V"/>
 <pinref part="P+2" gate="1" pin="+5V"/>
-<wire x1="883.92" y1="802.64" x2="899.16" y2="802.64" width="0.1524" layer="91"/>
+<wire x1="882.171309375" y1="800.165765625" x2="896.62" y2="800.165765625" width="0.1524" layer="91"/>
+<wire x1="896.62" y1="800.165765625" x2="896.62" y2="800.1" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$6" gate="G$1" pin="1.VBUS"/>
+<wire x1="993.14" y1="721.36" x2="980.44" y2="721.36" width="0.1524" layer="91"/>
+<label x="980.44" y="721.36" size="1.778" layer="95"/>
+<pinref part="P+3" gate="1" pin="+5V"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="15.VBUS"/>
+<wire x1="937.26" y1="680.72" x2="965.2" y2="680.72" width="0.1524" layer="91"/>
+<label x="960.12" y="680.72" size="1.778" layer="95"/>
+<pinref part="P+4" gate="1" pin="+5V"/>
 </segment>
 </net>
 <net name="N$2" class="0">
