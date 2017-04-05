@@ -1848,7 +1848,7 @@ design rules under a new name.</description>
 <contactref element="U$7" pad="2"/>
 <wire x1="33.02" y1="46.99" x2="46.05" y2="40.62" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$3">
+<signal name="MCLR">
 <contactref element="R1" pad="1"/>
 <contactref element="U$2" pad="1"/>
 <contactref element="RESET" pad="2"/>
@@ -1964,12 +1964,12 @@ design rules under a new name.</description>
 <wire x1="48.768" y1="19.05" x2="36.83" y2="38.1" width="0" layer="19" extent="1-1"/>
 <wire x1="30.48" y1="7.62" x2="48.768" y2="19.05" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$10">
+<signal name="PEGD1">
 <contactref element="U$8" pad="4"/>
 <contactref element="U$2" pad="4"/>
 <wire x1="1.27" y1="40.64" x2="22.86" y2="33.02" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$11">
+<signal name="PEGC1">
 <contactref element="U$8" pad="5"/>
 <contactref element="U$2" pad="5"/>
 <wire x1="1.27" y1="38.1" x2="22.86" y2="30.48" width="0" layer="19" extent="1-1"/>

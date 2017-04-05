@@ -1764,8 +1764,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="27.94" y="43.18" size="1.27" layer="21"/>
 </element>
 <element name="U$8" library="ME433" package="1X05" value="PICKIT3" x="1.27" y="48.26" smashed="yes" rot="R270">
-<attribute name="NAME" x="-1.143" y="49.53" size="0.6096" layer="25" font="vector" ratio="20" rot="R270"/>
-<attribute name="VALUE" x="-2.032" y="49.53" size="0.6096" layer="27" font="vector" ratio="20" rot="R270"/>
+<attribute name="VALUE" x="3.048" y="44.45" size="1.27" layer="27" ratio="20" rot="R270"/>
 </element>
 <element name="USER" library="ME433" package="SWITCH" value="SWITCH" x="15.24" y="3.81" smashed="yes">
 <attribute name="NAME" x="12.7" y="6.985" size="1.27" layer="21"/>
