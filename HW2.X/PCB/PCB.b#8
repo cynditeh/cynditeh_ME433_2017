@@ -175,6 +175,22 @@
 <text x="2.2225" y="18.0975" size="1.778" layer="25">+3.3V</text>
 <text x="2.8575" y="15.5575" size="1.778" layer="25">GND</text>
 <text x="29.845" y="47.9425" size="0.762" layer="25">+5V</text>
+<text x="5.3975" y="33.3375" size="1.778" layer="26" rot="MR0">A0</text>
+<text x="5.3975" y="30.7975" size="1.778" layer="26" rot="MR0">A1</text>
+<text x="5.3975" y="28.2575" size="1.778" layer="26" rot="MR0">B2</text>
+<text x="5.3975" y="25.7175" size="1.778" layer="26" rot="MR0">B3</text>
+<text x="5.3975" y="23.1775" size="1.778" layer="26" rot="MR0">B4</text>
+<text x="5.3975" y="20.6375" size="1.778" layer="26" rot="MR0">A4</text>
+<text x="8.89" y="18.0975" size="1.778" layer="26" rot="MR0">+3.3V</text>
+<text x="7.9375" y="15.5575" size="1.778" layer="26" rot="MR0">GND</text>
+<text x="47.3075" y="33.3375" size="1.778" layer="26" rot="MR0">B15</text>
+<text x="47.3075" y="30.7975" size="1.778" layer="26" rot="MR0">B14</text>
+<text x="47.3075" y="28.2575" size="1.778" layer="26" rot="MR0">B13</text>
+<text x="47.625" y="25.7175" size="1.778" layer="26" rot="MR0">B9</text>
+<text x="47.625" y="23.1775" size="1.778" layer="26" rot="MR0">B8</text>
+<text x="47.3075" y="20.6375" size="1.778" layer="26" rot="MR0">B7</text>
+<text x="47.3075" y="18.0975" size="1.778" layer="26" rot="MR0">+5V</text>
+<text x="47.625" y="15.5575" size="1.778" layer="26" rot="MR0">GND</text>
 </plain>
 <libraries>
 <library name="ME433">
