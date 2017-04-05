@@ -1764,11 +1764,10 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="27.94" y="43.18" size="1.27" layer="21"/>
 </element>
 <element name="U$8" library="ME433" package="1X05" value="PICKIT3" x="1.27" y="48.26" smashed="yes" rot="R270">
-<attribute name="NAME" x="-1.143" y="49.53" size="0.6096" layer="25" font="vector" ratio="20" rot="R270"/>
-<attribute name="VALUE" x="-2.032" y="49.53" size="0.6096" layer="27" font="vector" ratio="20" rot="R270"/>
+<attribute name="VALUE" x="3.048" y="44.45" size="1.27" layer="27" ratio="20" rot="R270"/>
 </element>
-<element name="USER" library="ME433" package="SWITCH" value="SWITCH" x="15.24" y="3.81" smashed="yes">
-<attribute name="NAME" x="12.7" y="6.985" size="1.27" layer="21"/>
+<element name="USER" library="ME433" package="SWITCH" value="SWITCH" x="15.24" y="3.81" smashed="yes" rot="R180">
+<attribute name="NAME" x="17.145" y="8.255" size="1.27" layer="21" rot="R180"/>
 </element>
 </elements>
 <signals>
@@ -1836,7 +1835,7 @@ design rules under a new name.</description>
 <wire x1="1.27" y1="16.51" x2="11.43" y2="22.86" width="0" layer="19" extent="1-1"/>
 <wire x1="7.62" y1="10.16" x2="1.27" y2="16.51" width="0" layer="19" extent="1-1"/>
 <wire x1="5.12" y1="3.81" x2="7.62" y2="10.16" width="0" layer="19" extent="1-1"/>
-<wire x1="17.74" y1="3.81" x2="7.62" y2="10.16" width="0" layer="19" extent="1-1"/>
+<wire x1="12.74" y1="3.81" x2="7.62" y2="10.16" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$1">
 <contactref element="LED1" pad="K"/>
@@ -1939,7 +1938,7 @@ design rules under a new name.</description>
 <contactref element="U$2" pad="21"/>
 <wire x1="30.48" y1="22.86" x2="44.45" y2="40.62" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$9">
+<signal name="USBID">
 <contactref element="U$6" pad="ID"/>
 <contactref element="U$2" pad="14"/>
 <wire x1="22.86" y1="7.62" x2="43.65" y2="41.82" width="0" layer="19" extent="1-1"/>
@@ -1950,7 +1949,7 @@ design rules under a new name.</description>
 <contactref element="R2" pad="1"/>
 <contactref element="USER" pad="2"/>
 <wire x1="11.43" y1="10.16" x2="22.86" y2="15.24" width="0" layer="19" extent="1-1"/>
-<wire x1="12.74" y1="3.81" x2="11.43" y2="10.16" width="0" layer="19" extent="1-1"/>
+<wire x1="17.74" y1="3.81" x2="11.43" y2="10.16" width="0" layer="19" extent="1-1"/>
 <wire x1="1.27" y1="24.13" x2="11.43" y2="10.16" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="+5V">
