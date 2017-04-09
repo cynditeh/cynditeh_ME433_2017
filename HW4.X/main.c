@@ -38,15 +38,18 @@
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
 #define CS LATAbits.LATA0  //set chip select pin as A0
-#define NUMPTS 100  //set number of points to plot per cycle
+#define NUMPTS 200  //set number of points to plot per cycle
 #define PI 3.14159265   //set PI to use for sine function
 #define MAXLVL 256  //define maximum level of 2^8
-static volatile int sineFunc[NUMPTS];
+
+static volatile char sineFunc[NUMPTS];
+static volatile char triangleFunc[NUMPTS];
 
 void setVoltage(char channel, char voltage);
 void initSPI1();
 char spi1_io(char write);
 void makeSineFunction();
+void makeTriangleFunction();
 
 int main() {
 
@@ -74,6 +77,7 @@ int main() {
     
     initSPI1();
     makeSineFunction();
+    makeTriangleFunction();
     
     while(1) {
         while(PORTBbits.RB4){
@@ -136,5 +140,12 @@ void makeSineFunction(){
     int i=0;
     for (i-0; i<NUMPTS;i++){
         sineFunc[i] = MAXLVL*sin(2*PI*i/MAXLVL);
+    }
+}
+
+void makeTriangleFunction(){
+    int i=0;
+    for (i-0; i<NUMPTS;i++){
+        triangleFunc[i] = i*MAXLVL/NUMPTS;
     }
 }
