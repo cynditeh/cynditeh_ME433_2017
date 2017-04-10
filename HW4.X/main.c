@@ -52,7 +52,7 @@ void makeSineFunction();
 void makeTriangleFunction();
 
 int main() {
-
+    int counter = 0;
     __builtin_disable_interrupts();
 
     // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
@@ -80,7 +80,7 @@ int main() {
     makeTriangleFunction();
     
     while(1) {
-        while(PORTBbits.RB4){
+        /*while(PORTBbits.RB4){
             _CP0_SET_COUNT(0);
             while (_CP0_GET_COUNT()<12000){  // 0.5ms delay = 0.5ms*24MHz
             // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
@@ -88,7 +88,20 @@ int main() {
             ;   //delay for 0.5ms
             }
             LATAbits.LATA4 = !LATAbits.LATA4;   //Invert pin RA4
+        }*/
+        for (counter=0; counter<NUMPTS; counter++){
+            setVoltage(0,sineFunc[counter]);
+            setVoltage(1,triangleFunc[counter]);
+            _CP0_SET_COUNT(0);
+            while (_CP0_GET_COUNT()<24000){  // 1ms delay = 1ms*24MHz
+            ;   //delay for 1ms
+            }
         }
+        counter=0;
+        /*_CP0_SET_COUNT(0);
+        while (_CP0_GET_COUNT()<240000){  // 10ms delay = 1ms*24MHz
+            ;   //delay for 1ms
+        }*/
     }
 }
 
@@ -138,8 +151,8 @@ char spi1_io(char write){
 
 void makeSineFunction(){
     int i=0;
-    for (i-0; i<NUMPTS;i++){
-        sineFunc[i] = MAXLVL*sin(2*PI*i/MAXLVL);
+    for (i=0; i<NUMPTS;i++){
+        sineFunc[i] = ((MAXLVL/2)*sin(2*PI*i/(NUMPTS/2)))+(MAXLVL/2)-1;
     }
 }
 
