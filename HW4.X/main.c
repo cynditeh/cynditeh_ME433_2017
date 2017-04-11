@@ -151,14 +151,14 @@ char spi1_io(char write){
 
 void makeSineFunction(){
     int i=0;
-    for (i=0; i<NUMPTS;i++){
+    for (i=0; i<NUMPTS; i++){
         sineFunc[i] = ((MAXLVL/2)*sin(2*PI*i/(NUMPTS/2)))+(MAXLVL/2)-1;
     }
 }
 
 void makeTriangleFunction(){
     int i=0;
-    for (i-0; i<NUMPTS;i++){
+    for (i=0; i<NUMPTS; i++){
         triangleFunc[i] = i*MAXLVL/NUMPTS;
     }
 }
