@@ -37,13 +37,17 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
+#define SLAVE_ADDR 0x27 //define slave address
+#define GPIO_ADDR 0x09 //define address of GPIO register
 
 void initExpander();
 void setExpander(char pin, char level);
 char getExpander();
 
 int main() {
-
+    
+    char stat = 0;
+    
     __builtin_disable_interrupts();
 
     // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
@@ -64,25 +68,55 @@ int main() {
     TRISAbits.TRISA4 = 0;   //Set pin RA4 as an output pin
     LATAbits.LATA4 = 1;     //Initialise LED to be HIGH
     
+    initExpander();
+    //IOCON.SEQOP = 0;
+    
     __builtin_enable_interrupts();
     
     
     while(1) {
         
-        
-        
+        stat = (getExpander() & 0x80) >> 7;    
+        if (stat == 1){
+            setExpander(0,1);
+        }
+        else if (stat == 0){
+            setExpander(0,0);
+        }
         
     }
 }
 
 void initExpander(){
+    ANSELBbits.ANSB2 = 0;   //turn off B2 pin as analog input
+    ANSELBbits.ANSB3 = 0;   //turn off B3 pin as analog input
     
+    i2c_master_setup(); //set up i2c
 }
 
-void setExpander(char pin, char level){
+void setExpander(char pin, char level){ //to set GP0 on expander high if GP7 is high
     
-}
+    unsigned char master_write = (level & 0x0001) << pin;
+    
+    i2c_master_start(); //begin the start sequence
+    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
+    i2c_master_send(GPIO_ADDR);    //send register address
+    i2c_master_send(master_write);
+    i2c_master_stop();
+}   
 
-char getExpander(){
+char getExpander(){ //to read pin GP7
     
+    char master_read = 0x00;
+    
+    i2c_master_start(); //begin the start sequence
+    i2c_master_send(SLAVE_ADDR <<1 | 0x01);    //send slave address and left shift by 1 to indicate write with LSB 0
+    //i2c_master_send(GPIO_ADDR);    //send register address
+    i2c_master_restart();
+    i2c_master_send(SLAVE_ADDR <<1 | 0x01);    //send control bit again
+    master_read = i2c_master_recv();
+    i2c_master_ack(1);
+    i2c_master_stop();
+    
+    return master_read;
 }

@@ -152,7 +152,7 @@ char spi1_io(char write){
 void makeSineFunction(){
     int i=0;
     for (i=0; i<NUMPTS; i++){
-        sineFunc[i] = ((MAXLVL/2)*sin(2*PI*i/(NUMPTS/2)))+(MAXLVL/2)-1;
+        sineFunc[i] = (((MAXLVL-1)/2)*sin(2*PI*i/(NUMPTS/2)))+(MAXLVL/2)-1;
     }
 }
 
