@@ -13,7 +13,7 @@ void i2c_master_setup(void) {
 // Start a transmission on the I2C bus
 void i2c_master_start(void) {
     I2C2CONbits.SEN = 1;            // send the start bit
-    while(I2C1CONbits.SEN) { ; }    // wait for the start bit to be sent
+    while(I2C2CONbits.SEN) { ; }    // wait for the start bit to be sent
 }
 
 void i2c_master_restart(void) {     

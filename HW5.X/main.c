@@ -40,6 +40,7 @@
 #define SLAVE_ADDR 0x27 //define slave address
 #define GPIO_ADDR 0x09 //define address of GPIO register
 #define PU_ADDR 0x06    //define address of GPIO pull up resistor register
+#define IO_ADDR 0x00    //define address of IODIR
 
 void initExpander();
 void setExpander(char pin, char level);
@@ -77,13 +78,8 @@ int main() {
     
     while(1) {
         
-        stat = (getExpander() & 0x80) >> 7;    
-        if (stat == 1){
-            setExpander(0,1);
-        }
-        else if (stat == 0){
-            setExpander(0,0);
-        }
+        stat = (getExpander() & 0x80) >> 7;  //stat=0 when button is pushed
+        setExpander(0,!stat);   //set pin GP0 with level of !stat to set high when button pushed
         
     }
 }
@@ -97,6 +93,13 @@ void initExpander(){
     //Set GP0-3 as outputs, initially off and GP4-7 as inputs
     i2c_master_start(); //begin the start sequence
     i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
+    i2c_master_send(IO_ADDR);    //send register address to IODIR register
+    i2c_master_send(0xF0);  //send data to set IO
+    i2c_master_stop();
+    
+    //Set GP0-3 initially off and GP4-7 as pull-up high
+    i2c_master_start(); //begin the start sequence
+    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
     i2c_master_send(PU_ADDR);    //send register address to pull up resistor
     i2c_master_send(0xF0);  //send data
     i2c_master_stop();
@@ -104,13 +107,14 @@ void initExpander(){
 
 void setExpander(char pin, char level){ //to set GP0 on expander high if GP7 is high
     
-    unsigned char master_write = (level & 0x0001) << pin;
+    unsigned char master_write = (level & 0x01) << pin; //put the level value where the pin is
     
     i2c_master_start(); //begin the start sequence
-    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
+    i2c_master_send(SLAVE_ADDR << 1);    //send slave address and left shift by 1 to indicate write with LSB 0
     i2c_master_send(GPIO_ADDR);    //send register address
     i2c_master_send(master_write);
     i2c_master_stop();
+    
 }   
 
 char getExpander(){ //to read GPIO address
@@ -118,10 +122,10 @@ char getExpander(){ //to read GPIO address
     char master_read = 0x00;
     
     i2c_master_start(); //begin the start sequence
-    i2c_master_send(SLAVE_ADDR <<1 | 0x00);    //send slave address and left shift by 1 to indicate write with LSB 0
+    i2c_master_send(SLAVE_ADDR << 1);    //send slave address and left shift by 1 to indicate write with LSB 0
     i2c_master_send(GPIO_ADDR);    //send register address
     i2c_master_restart();
-    i2c_master_send(SLAVE_ADDR <<1 | 0x01);    //send control bit again
+    i2c_master_send(SLAVE_ADDR <<1 | 0x01);  //send slave address and left shift by 1 and or 1 to indicate read with LSB 1
     master_read = i2c_master_recv();
     i2c_master_ack(1);
     i2c_master_stop();
