@@ -79,7 +79,7 @@ int main() {
     while(1) {
         
         stat = (getExpander() & 0x80) >> 7;  //stat=0 when button is pushed
-        setExpander(0,!stat);   //set pin GP0 with level of !stat to set high when button pushed
+        setExpander(0,stat);   //set pin GP0 with level of stat to set high when button is high
         
     }
 }
