@@ -40,11 +40,18 @@
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
 #define CS LATBbits.LATB7  //set chip select pin as B7
+#define BAR_LENGTH 100  //set length of progress bar
+#define BAR_WIDTH 8     //set width of progress bar
+#define BACKGROUND ORANGE
+#define TEXT BLACK
 
-void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c);
+void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c);    //display character
+void display_string(unsigned short xpos, unsigned short ypos, char* msg);   //display string
+void draw_bar(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len);    //update progress bar
 
 int main() {
-    int counter = 0;
+    int count = 0;
+    char message[20];
     __builtin_disable_interrupts();
 
     // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
@@ -69,13 +76,25 @@ int main() {
     
     SPI1_init();
     LCD_init();
-    LCD_clearScreen(ORANGERED);
+    LCD_clearScreen(BACKGROUND);
     
     //int i=0, j=0;
-    
-    display_char(50, 50, RED, GREEN, 0x48);
+    //sprintf(message, "Hello World!");
+    //display_char(48, 46, BLACK, WHITE, 0x48);
+    //display_string(10, 10, message);
     
     while(1) {
+        
+        for (count=0; count<=100; count++){
+            sprintf(message, "Hello World %d!   ", count);
+            display_string(28, 32, message);
+            draw_bar(14, 50, BAR_WIDTH, GREEN, RED, count);
+            _CP0_SET_COUNT(0);
+            while (_CP0_GET_COUNT()<4800000){  // 200ms delay = 200ms*24MHz
+                ;   //delay for 200ms
+            }
+        }
+        count=0;
         /*for (i=0; i<128; i++){
             for (j=0; j<128; j++){
                 LCD_drawPixel(i,j,BLUE);
@@ -93,13 +112,37 @@ void display_char(unsigned short x, unsigned short y, unsigned short color1, uns
     unsigned short dot=0;
     for (i=0; i<5; i++){
         for (j=0; j<8; j++){
-            dot = (ASCII[c-0x20][i] >> (7-j))&0x1;
-            if (dot==1){
-                LCD_drawPixel(x+i,y+j, color1);
+            if (x+i<128 && y+j<128){
+                dot = (ASCII[c-0x20][i] >> j)&0x1;
+                if (dot==1){
+                    LCD_drawPixel(x+i,y+j, color1);
+                }
+                else if (dot==0){
+                    LCD_drawPixel(x+i,y+j, color2);
+                }
             }
-            else if (dot==0){
-                LCD_drawPixel(x+i,y+j, color2);
-            }
+        }
+    }
+}
+
+void display_string(unsigned short xpos, unsigned short ypos, char* msg){
+    int counter = 0;
+    while (msg[counter]!=0){
+        display_char(xpos+5*counter, ypos, TEXT, BACKGROUND, msg[counter]);
+        counter++;
+    }
+}
+
+void draw_bar(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len){
+    int xdir = 0, ydir=0;
+    for (xdir=0; xdir<len; xdir++){
+        for (ydir=0; ydir<w; ydir++){
+            LCD_drawPixel(x1+xdir, y1+ydir, colorA);
+        }
+    }
+    for (xdir=len; xdir<BAR_LENGTH; xdir++){
+        for (ydir=0; ydir<w; ydir++){
+            LCD_drawPixel(x1+xdir, y1+ydir, colorB);
         }
     }
 }
