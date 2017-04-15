@@ -41,6 +41,8 @@
 
 #define CS LATBbits.LATB7  //set chip select pin as B7
 
+void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c);
+
 int main() {
     int counter = 0;
     __builtin_disable_interrupts();
@@ -69,7 +71,35 @@ int main() {
     LCD_init();
     LCD_clearScreen(ORANGERED);
     
+    //int i=0, j=0;
+    
+    display_char(50, 50, RED, GREEN, 0x48);
+    
     while(1) {
-        ;
+        /*for (i=0; i<128; i++){
+            for (j=0; j<128; j++){
+                LCD_drawPixel(i,j,BLUE);
+                _CP0_SET_COUNT(0);
+                while (_CP0_GET_COUNT()<240000){  // 10ms delay = 10ms*24MHz
+                ;   //delay for 1ms
+                }
+            }
+        }*/
+    }
+}
+
+void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c){
+    int i=0, j=0;
+    unsigned short dot=0;
+    for (i=0; i<5; i++){
+        for (j=0; j<8; j++){
+            dot = (ASCII[c-0x20][i] >> (7-j))&0x1;
+            if (dot==1){
+                LCD_drawPixel(x+i,y+j, color1);
+            }
+            else if (dot==0){
+                LCD_drawPixel(x+i,y+j, color2);
+            }
+        }
     }
 }
