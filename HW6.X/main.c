@@ -1,6 +1,7 @@
 #include <xc.h>           // processor SFR definitions
 #include <sys/attribs.h>  // __ISR macro
 #include <math.h>    //include math library
+#include <stdio.h>  //include standard io library
 #include "ILI9163C.h"   //include LCD library
 
 // DEVCFG0
@@ -38,19 +39,7 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
-#define CS LATAbits.LATA0  //set chip select pin as A0
-#define NUMPTS 200  //set number of points to plot per cycle
-#define PI 3.14159265   //set PI to use for sine function
-#define MAXLVL 256  //define maximum level of 2^8
-
-static volatile char sineFunc[NUMPTS];
-static volatile char triangleFunc[NUMPTS];
-
-void setVoltage(char channel, char voltage);
-void initSPI1();
-char spi1_io(char write);
-void makeSineFunction();
-void makeTriangleFunction();
+#define CS LATBbits.LATB7  //set chip select pin as B7
 
 int main() {
     int counter = 0;
@@ -76,90 +65,11 @@ int main() {
     
     __builtin_enable_interrupts();
     
-    initSPI1();
-    makeSineFunction();
-    makeTriangleFunction();
+    SPI1_init();
+    LCD_init();
+    LCD_clearScreen(ORANGERED);
     
     while(1) {
-        /*while(PORTBbits.RB4){
-            _CP0_SET_COUNT(0);
-            while (_CP0_GET_COUNT()<12000){  // 0.5ms delay = 0.5ms*24MHz
-            // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-              // remember the core timer runs at half the CPU speed
-            ;   //delay for 0.5ms
-            }
-            LATAbits.LATA4 = !LATAbits.LATA4;   //Invert pin RA4
-        }*/
-        for (counter=0; counter<NUMPTS; counter++){
-            setVoltage(0,sineFunc[counter]);
-            setVoltage(1,triangleFunc[counter]);
-            _CP0_SET_COUNT(0);
-            while (_CP0_GET_COUNT()<24000){  // 1ms delay = 1ms*24MHz
-            ;   //delay for 1ms
-            }
-        }
-        counter=0;
-        /*_CP0_SET_COUNT(0);
-        while (_CP0_GET_COUNT()<240000){  // 10ms delay = 1ms*24MHz
-            ;   //delay for 1ms
-        }*/
-    }
-}
-
-void setVoltage(char channel, char voltage){
-    if (channel==0){    //set VoutA
-        CS = 0;
-        spi1_io(0x70|((voltage & 0xF0)>>4));
-        spi1_io((voltage & 0x0F)<<4);
-        CS = 1;
-    }
-    else if (channel==1){   //set VoutB
-        CS = 0;
-        spi1_io(0xF0|((voltage & 0xF0)>>4));
-        spi1_io((voltage & 0x0F)<<4);
-        CS = 1;
-    }
-    else 
         ;
-}
-
-void initSPI1(){
-    RPA0Rbits.RPA0R = 0b0000;   //set A0 as SS1 pin
-    RPB8Rbits.RPB8R = 0b0011;   //set B8 as SDO pin
-    
-    TRISAbits.TRISA0 = 0;   //set pin A0 as output
-    TRISBbits.TRISB8 = 0;   //set pin B8 as output
-    
-    CS = 1; //when command is beginning, clear CS to low and at ending, CS high.
-    
-    SPI1CON = 0;              // turn off the spi module and reset it
-    SPI1BUF;                  // clear the rx buffer by reading from it
-    SPI1BRG = 0x1;            // baud rate to 12 MHz [SPI4BRG = (48000000/(2*desired))-1]
-    SPI1STATbits.SPIROV = 0;  // clear the overflow bit
-    SPI1CONbits.CKE = 1;      // data changes when clock goes from hi to lo (since CKP is 0)
-    SPI1CONbits.MSTEN = 1;    // master operation
-    SPI1CONbits.ON = 1;       // turn on spi 1
-}
-
-//send a byte via SPI and return the response
-char spi1_io(char write){
-    SPI1BUF = write;    //write the byte to SPI1
-    while(!SPI1STATbits.SPIRBF){
-        ;   //do nothing while receiving the byte
-    }
-    return SPI1BUF;
-}
-
-void makeSineFunction(){
-    int i=0;
-    for (i=0; i<NUMPTS; i++){
-        sineFunc[i] = (((MAXLVL-1)/2)*sin(2*PI*i/(NUMPTS/2)))+(MAXLVL/2)-1;
-    }
-}
-
-void makeTriangleFunction(){
-    int i=0;
-    for (i=0; i<NUMPTS; i++){
-        triangleFunc[i] = i*MAXLVL/NUMPTS;
     }
 }
