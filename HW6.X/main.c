@@ -52,6 +52,8 @@ void draw_bar(unsigned short x1, unsigned short y1, unsigned short w, unsigned s
 int main() {
     int count = 0;
     char message[20];
+    float fps = 0;
+
     __builtin_disable_interrupts();
 
     // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
@@ -86,10 +88,13 @@ int main() {
     while(1) {
         
         for (count=0; count<=100; count++){
+            _CP0_SET_COUNT(0);
             sprintf(message, "Hello World %d!   ", count);
             display_string(28, 32, message);
             draw_bar(14, 50, BAR_WIDTH, GREEN, RED, count);
-            _CP0_SET_COUNT(0);
+            fps = 24000000.00/_CP0_GET_COUNT();
+            sprintf(message, "FPS = %4.2f   ", fps);
+            display_string(28, 70, message);
             while (_CP0_GET_COUNT()<4800000){  // 200ms delay = 200ms*24MHz
                 ;   //delay for 200ms
             }
@@ -109,6 +114,8 @@ int main() {
 
 void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c){
     int i=0, j=0;
+    char text[50];
+    float fps = 0;
     unsigned short dot=0;
     for (i=0; i<5; i++){
         for (j=0; j<8; j++){
@@ -120,6 +127,9 @@ void display_char(unsigned short x, unsigned short y, unsigned short color1, uns
                 else if (dot==0){
                     LCD_drawPixel(x+i,y+j, color2);
                 }
+                /*fps = 24000000/((i+1)*(j+1)*_CP0_GET_COUNT());
+                sprintf(text, "FPS = %4.2f   ", fps);
+                display_string(28, 70, text);*/
             }
         }
     }
@@ -127,7 +137,7 @@ void display_char(unsigned short x, unsigned short y, unsigned short color1, uns
 
 void display_string(unsigned short xpos, unsigned short ypos, char* msg){
     int counter = 0;
-    while (msg[counter]!=0){
+    while (msg[counter]){
         display_char(xpos+5*counter, ypos, TEXT, BACKGROUND, msg[counter]);
         counter++;
     }
