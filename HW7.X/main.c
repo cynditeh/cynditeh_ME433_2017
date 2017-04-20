@@ -48,8 +48,9 @@
 #define WHO_AM_I_ADDR 0x0F  //define address of WHO_AM_I register
 
 #define CS LATBbits.LATB7  //set chip select pin as B7
-#define BAR_LENGTH 100  //set length of progress bar
-#define BAR_WIDTH 8     //set width of progress bar
+#define BAR_LENGTH 50  //set length of progress bar
+#define CAL 500 //set scaling of value
+#define BAR_WIDTH 2     //set width of progress bar
 #define BACKGROUND ORANGE
 #define TEXT BLACK
 
@@ -60,8 +61,8 @@ void I2C_read_multiple(unsigned char slave_address, unsigned char register, unsi
 
 void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c);    //display character
 void display_string(unsigned short xpos, unsigned short ypos, char* msg);   //display string
-void draw_barX(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len);    //update progress bar
-void draw_barY(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len);    //update progress bar
+void draw_barX(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, signed short len);    //update progress bar
+void draw_barY(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, signed short len);    //update progress bar
 
 
 int main() {
@@ -111,28 +112,28 @@ int main() {
         for (i=0; i<3; i++){
             data_array[i]=(data[2*i+1]<<8)|data[2*i];
         }
+//        
+//        for (k=0; k<2; k++){
+//        sprintf(message, "Data %d = %d   ", k ,data_array[k]);
+//        display_string(28, 2+9*k, message);
+//        }
+        sprintf(message, "X_ACCEL = %d   " ,data_array[0]);
+        display_string(28, 2, message); //display x direction acceleration
+        sprintf(message, "Y_ACCEL = %d   " ,data_array[1]);
+        display_string(28, 12, message);    //display y direction acceleration
         
-        for (k=0; k<3; k++){
-        sprintf(message, "Data %d = %d   ", k ,data_array[k]);
-        display_string(28, 2+9*k, message);
+        draw_barX(63, 73, BAR_WIDTH, BLUE, BACKGROUND, data_array[0]);    //display x direction bar
+        draw_barY(64, 73, BAR_WIDTH, BLUE, BACKGROUND, data_array[1]);    //display y direction bar
+              
+        /*I2C_read_multiple(SLAVE_ADDR, OUT_TEMP_L_ADDR, data, 14); //code to read all 14 registers
+        for (i=0; i<7; i++){
+            data_array[i]=(data[2*i+1]<<8)|data[2*i];
         }
         
-        draw_barX(64, 79, BAR_WIDTH, GREEN, BACKGROUND, data_array[0]);
-        draw_barY(64, 79, BAR_WIDTH, GREEN, BACKGROUND, data_array[1]);
-                
-//        I2C_read_multiple(SLAVE_ADDR, OUT_TEMP_L_ADDR, data, 14);
-//        for (i=0; i<7; i++){
-//            data_array[i]=(data[2*i+1]<<8)|data[2*i];
-//        }
-//        
-//        for (k=0; k<7; k++){
-//        sprintf(message, "Data %d = %d   ", k ,data_array[k]);
-//        display_string(28, 25+10*k, message);
-//        }
-        //draw_bar(14, 50, BAR_WIDTH, GREEN, RED, count);
-//        fps = 24000000.00/_CP0_GET_COUNT();
-//        sprintf(message, "FPS = %4.2f   ", fps);
-//        display_string(28, 70, message);
+        for (k=0; k<7; k++){    //transfer all into shorts
+        sprintf(message, "Data %d = %d   ", k ,data_array[k]);
+        display_string(28, 25+10*k, message);
+        }*/
         while (_CP0_GET_COUNT()<4800000){  // 200ms delay = 200ms*24MHz
             ;   //delay for 200ms
         }
@@ -146,42 +147,23 @@ void initIMU(){
     i2c_master_setup(); //set up i2c
     
     //Set CTRL values by sequential write
-//    i2c_master_start(); //begin the start sequence
-//    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
-//    i2c_master_send(CTRL1_ADDR);    //send register address to CTRL register
-//    i2c_master_send(0x82);  //send data to set CTRL1
-//    i2c_master_send(0x88);  //send data to set CTRL2
-//    i2c_master_send(0x04);  //send data to set CTRL3
-//    i2c_master_stop();
-//    
     i2c_master_start(); //begin the start sequence
     i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
-    i2c_master_send(CTRL1_ADDR);    //send register address to CTRL register
+    i2c_master_send(CTRL1_ADDR);    //send register address to CTRL1 register
     i2c_master_send(0x82);  //send data to set CTRL1
+    i2c_master_send(0x88);  //send data to set CTRL2
+    i2c_master_send(0x04);  //send data to set CTRL3
     i2c_master_stop();
-
-    i2c_master_start(); //begin the start sequence
-    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
-    i2c_master_send(CTRL2_ADDR);    //send register address to CTRL register
-    i2c_master_send(0x88);  //send data to set CTRL1
-    i2c_master_stop();
-
-    i2c_master_start(); //begin the start sequence
-    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
-    i2c_master_send(CTRL3_ADDR);    //send register address to CTRL register
-    i2c_master_send(0x04);  //send data to set CTRL1
-    i2c_master_stop();
-
 }
 
 char whoAmI(){
     char who = 0;
     i2c_master_start(); //begin the start sequence
     i2c_master_send(SLAVE_ADDR << 1);    //send slave address and left shift by 1 to indicate write with LSB 0
-    i2c_master_send(WHO_AM_I_ADDR);    //send register address
+    i2c_master_send(WHO_AM_I_ADDR);    //send WHO_AM_I register address
     i2c_master_restart();
     i2c_master_send(SLAVE_ADDR <<1 | 0x01);  //send slave address and left shift by 1 and or 1 to indicate read with LSB 1
-    who = i2c_master_recv();
+    who = i2c_master_recv();    //receive WHO_AM_I value
     i2c_master_ack(1);
     i2c_master_stop();
     
@@ -190,13 +172,12 @@ char whoAmI(){
 
 void I2C_read_multiple(unsigned char slave_address, unsigned char reg, unsigned char * data, int length){ //to read values from accelerometer address
     int i=0;
-    
     i2c_master_start(); //begin the start sequence
     i2c_master_send(slave_address << 1);    //send slave address and left shift by 1 to indicate write with LSB 0
     i2c_master_send(reg);    //send register address
     i2c_master_restart();
     i2c_master_send(slave_address <<1 | 0x01);  //send slave address and left shift by 1 and or 1 to indicate read with LSB 1
-    for (i=0;i<length-1;i++){
+    for (i=0;i<length-1;i++){   //loop for number of data to read
     data[i] = i2c_master_recv();
     i2c_master_ack(0);
     }
@@ -207,8 +188,6 @@ void I2C_read_multiple(unsigned char slave_address, unsigned char reg, unsigned 
 
 void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c){
     int i=0, j=0;
-    char text[50];
-    float fps = 0;
     unsigned short dot=0;
     for (i=0; i<5; i++){
         for (j=0; j<8; j++){
@@ -220,9 +199,6 @@ void display_char(unsigned short x, unsigned short y, unsigned short color1, uns
                 else if (dot==0){
                     LCD_drawPixel(x+i,y+j, color2);
                 }
-                /*fps = 24000000/((i+1)*(j+1)*_CP0_GET_COUNT());
-                sprintf(text, "FPS = %4.2f   ", fps);
-                display_string(28, 70, text);*/
             }
         }
     }
@@ -236,44 +212,114 @@ void display_string(unsigned short xpos, unsigned short ypos, char* msg){
     }
 }
 
-void draw_barX(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len){
-    int xdirX = 0, ydirX=0;
-    if (len>=0){
-        for (xdirX=0; xdirX<len; xdirX++){
-            for (ydirX=0; ydirX<w; ydirX++){
-                LCD_drawPixel(x1+xdirX, y1+ydirX, colorA);
+void draw_barX(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, signed short len){
+    signed short xdirX = 0, ydirX=0;
+    if (len>=0){    //check if direction is positive
+        if ((len/CAL)<BAR_LENGTH){
+            for (xdirX=0; xdirX<(len/CAL); xdirX++){    //print colorA for len
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorA);
+                }
+            }
+            for (xdirX=(len/CAL); xdirX<BAR_LENGTH; xdirX++){   //print colorB for len to BAR_LENGTH
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorB);
+                }
+            }
+            for (xdirX=0; xdirX>(-BAR_LENGTH); xdirX--){    //print colorB for opposite direction
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorB);
+                }
             }
         }
-        for (xdirX=len; xdirX<BAR_LENGTH; xdirX++){
-            for (ydirX=0; ydirX<w; ydirX++){
-                LCD_drawPixel(x1+xdirX, y1+ydirX, colorB);
+        else {
+            for (xdirX=0; xdirX<BAR_LENGTH; xdirX++){   //print full bar if out of range
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorA);
+                }
+            }
+        }
+    }
+    else if (len<0){    //case if negative length
+        if ((len/CAL)>(-BAR_LENGTH)){   //check if range within BAR_LENGTH
+            for (xdirX=0; xdirX>(len/CAL); xdirX--){    //print colorA for len
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorA);
+                }
+            }
+            for (xdirX=len/CAL; xdirX>(-BAR_LENGTH); xdirX--){  //print colorB for len to BAR_LENGTH
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorB);
+                }
+            }
+            for (xdirX=0; xdirX<BAR_LENGTH; xdirX++){   //print colorB for opposite direction
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorB);
+                }
+            }
+        }
+        else {
+            for (xdirX=0; xdirX>(-BAR_LENGTH); xdirX--){    //print full bar if out of range
+                for (ydirX=0; ydirX<w; ydirX++){
+                    LCD_drawPixel(x1-xdirX, y1-ydirX, colorA);
+                }
+            }
+        }
+    }
+}
+
+void draw_barY(unsigned short x2, unsigned short y2, unsigned short w, unsigned short colorA, unsigned short colorB, signed short len){
+    signed short xdirY = 0, ydirY=0;
+    if (len>=0){
+        if ((len/CAL)<BAR_LENGTH){
+            for (ydirY=0; ydirY<(len/CAL); ydirY++){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorA);
+                }
+            }
+            for (ydirY=(len/CAL); ydirY<BAR_LENGTH; ydirY++){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorB);
+                }
+            }
+            for (ydirY=0; ydirY>(-BAR_LENGTH); ydirY--){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorB);
+                }
+            }
+        }
+        else {
+            for (ydirY=0; ydirY<BAR_LENGTH; ydirY++){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorA);
+                }
             }
         }
     }
     else if (len<0){
-        for (xdirX=0; xdirX<len; xdirX++){
-            for (ydirX=0; ydirX<w; ydirX++){
-                LCD_drawPixel(x1+xdirX, y1+ydirX, colorA);
+        if ((len/CAL)>(-BAR_LENGTH)){
+            for (ydirY=0; ydirY>(len/CAL); ydirY--){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorA);
+                }
+            }
+            for (ydirY=len/CAL; ydirY>(-BAR_LENGTH); ydirY--){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorB);
+                }
+            }
+            for (ydirY=0; ydirY<BAR_LENGTH; ydirY++){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorB);
+                }
             }
         }
-        for (xdirX=len; xdirX<BAR_LENGTH; xdirX++){
-            for (ydirX=0; ydirX<w; ydirX++){
-                LCD_drawPixel(x1+xdirX, y1+ydirX, colorB);
+        else {
+            for (ydirY=0; ydirY>(-BAR_LENGTH); ydirY--){
+                for (xdirY=0; xdirY<w; xdirY++){
+                    LCD_drawPixel(x2-xdirY, y2-ydirY, colorA);
+                }
             }
-        }    
-    }
-}
-
-void draw_barY(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len){
-    int xdir = 0, ydir=0;
-    for (xdir=0; xdir<len; xdir++){
-        for (ydir=0; ydir<w; ydir++){
-            LCD_drawPixel(x1+xdir, y1+ydir, colorA);
-        }
-    }
-    for (xdir=len; xdir<BAR_LENGTH; xdir++){
-        for (ydir=0; ydir<w; ydir++){
-            LCD_drawPixel(x1+xdir, y1+ydir, colorB);
         }
     }
 }
