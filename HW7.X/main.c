@@ -1,5 +1,6 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
+#include<stdio.h>   //standard input output library
 #include"i2c_master_noint.h"    //include i2c header file
 #include"ILI9163C.h"    //include LCD header file
 
@@ -40,24 +41,35 @@
 
 #define SLAVE_ADDR 0x6B //define slave address
 #define CTRL1_ADDR 0x10 //define address of CTRL_1 register
+#define CTRL2_ADDR 0x11 //define address of CTRL_1 register
+#define CTRL3_ADDR 0x12 //define address of CTRL_1 register
 #define OUT_TEMP_L_ADDR 0x20   //define address of OUT_TEMP_L register
-#define OUT_TEMP_L_ADDR 0x28    //define address of OUTX_L_XL register
+#define OUTX_L_XL_ADDR 0x28    //define address of OUTX_L_XL register
 #define WHO_AM_I_ADDR 0x0F  //define address of WHO_AM_I register
 
-void initLMS();
-void setExpander(char pin, char level);
+#define CS LATBbits.LATB7  //set chip select pin as B7
+#define BAR_LENGTH 100  //set length of progress bar
+#define BAR_WIDTH 8     //set width of progress bar
+#define BACKGROUND ORANGE
+#define TEXT BLACK
+
+void initIMU();
+char whoAmI();
 void I2C_read_multiple(unsigned char slave_address, unsigned char register, unsigned char * data, int length);
 
 
 void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c);    //display character
 void display_string(unsigned short xpos, unsigned short ypos, char* msg);   //display string
-void draw_bar(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len);    //update progress bar
+void draw_barX(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len);    //update progress bar
+void draw_barY(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len);    //update progress bar
+
 
 int main() {
     
     unsigned char data[14];
+    char message[20];
     signed short data_array[7];
-    char stat = 0;
+    int i=0, k=0;
     
     __builtin_disable_interrupts();
 
@@ -79,62 +91,118 @@ int main() {
     TRISAbits.TRISA4 = 0;   //Set pin RA4 as an output pin
     LATAbits.LATA4 = 1;     //Initialise LED to be HIGH
     
-    initLMS();
+    SPI1_init();
+    LCD_init();
+    LCD_clearScreen(BACKGROUND);
+    initIMU();
     //IOCON.SEQOP = 0;
     
     __builtin_enable_interrupts();
     
     
+    
+    
     while(1) {
-        I2C_read_multiple(SLAVE_ADDR, OUT_TEMP_L_ADDR, data, 14);
-        for (i=0; i<7; i++){
-            data_array[i]=(data[2*i]<<8)|data[2*i+1];
+        
+        //sprintf(message, "WHO AM I: %d!   ", whoAmI());
+        //display_string(28, 10, message);
+        _CP0_SET_COUNT(0); 
+        I2C_read_multiple(SLAVE_ADDR, OUTX_L_XL_ADDR, data, 6);
+        for (i=0; i<3; i++){
+            data_array[i]=(data[2*i+1]<<8)|data[2*i];
+        }
+        
+        for (k=0; k<3; k++){
+        sprintf(message, "Data %d = %d   ", k ,data_array[k]);
+        display_string(28, 2+9*k, message);
+        }
+        
+        draw_barX(64, 79, BAR_WIDTH, GREEN, BACKGROUND, data_array[0]);
+        draw_barY(64, 79, BAR_WIDTH, GREEN, BACKGROUND, data_array[1]);
+                
+//        I2C_read_multiple(SLAVE_ADDR, OUT_TEMP_L_ADDR, data, 14);
+//        for (i=0; i<7; i++){
+//            data_array[i]=(data[2*i+1]<<8)|data[2*i];
+//        }
+//        
+//        for (k=0; k<7; k++){
+//        sprintf(message, "Data %d = %d   ", k ,data_array[k]);
+//        display_string(28, 25+10*k, message);
+//        }
+        //draw_bar(14, 50, BAR_WIDTH, GREEN, RED, count);
+//        fps = 24000000.00/_CP0_GET_COUNT();
+//        sprintf(message, "FPS = %4.2f   ", fps);
+//        display_string(28, 70, message);
+        while (_CP0_GET_COUNT()<4800000){  // 200ms delay = 200ms*24MHz
+            ;   //delay for 200ms
         }
     }
 }
 
-void initLMS(){
+void initIMU(){
     ANSELBbits.ANSB2 = 0;   //turn off B2 pin as analog input
     ANSELBbits.ANSB3 = 0;   //turn off B3 pin as analog input
     
     i2c_master_setup(); //set up i2c
     
     //Set CTRL values by sequential write
+//    i2c_master_start(); //begin the start sequence
+//    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
+//    i2c_master_send(CTRL1_ADDR);    //send register address to CTRL register
+//    i2c_master_send(0x82);  //send data to set CTRL1
+//    i2c_master_send(0x88);  //send data to set CTRL2
+//    i2c_master_send(0x04);  //send data to set CTRL3
+//    i2c_master_stop();
+//    
     i2c_master_start(); //begin the start sequence
     i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
     i2c_master_send(CTRL1_ADDR);    //send register address to CTRL register
     i2c_master_send(0x82);  //send data to set CTRL1
-    i2c_master_send(0x88);  //send data to set CTRL2
-    i2c_master_send(0x04);  //send data to set CTRL3
     i2c_master_stop();
+
+    i2c_master_start(); //begin the start sequence
+    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
+    i2c_master_send(CTRL2_ADDR);    //send register address to CTRL register
+    i2c_master_send(0x88);  //send data to set CTRL1
+    i2c_master_stop();
+
+    i2c_master_start(); //begin the start sequence
+    i2c_master_send(SLAVE_ADDR <<1);    //send slave address and left shift by 1 to indicate write with LSB 0
+    i2c_master_send(CTRL3_ADDR);    //send register address to CTRL register
+    i2c_master_send(0x04);  //send data to set CTRL1
+    i2c_master_stop();
+
 }
 
-void setExpander(char pin, char level){ //to set GP0 on expander high if GP7 is high
-    
-    unsigned char master_write = (level & 0x01) << pin; //put the level value where the pin is
-    
+char whoAmI(){
+    char who = 0;
     i2c_master_start(); //begin the start sequence
     i2c_master_send(SLAVE_ADDR << 1);    //send slave address and left shift by 1 to indicate write with LSB 0
-    i2c_master_send(GPIO_ADDR);    //send register address
-    i2c_master_send(master_write);
+    i2c_master_send(WHO_AM_I_ADDR);    //send register address
+    i2c_master_restart();
+    i2c_master_send(SLAVE_ADDR <<1 | 0x01);  //send slave address and left shift by 1 and or 1 to indicate read with LSB 1
+    who = i2c_master_recv();
+    i2c_master_ack(1);
     i2c_master_stop();
     
-}   
+    return who;
+}
 
 void I2C_read_multiple(unsigned char slave_address, unsigned char reg, unsigned char * data, int length){ //to read values from accelerometer address
+    int i=0;
     
     i2c_master_start(); //begin the start sequence
     i2c_master_send(slave_address << 1);    //send slave address and left shift by 1 to indicate write with LSB 0
     i2c_master_send(reg);    //send register address
     i2c_master_restart();
     i2c_master_send(slave_address <<1 | 0x01);  //send slave address and left shift by 1 and or 1 to indicate read with LSB 1
-    for (i=0;i<length;i++){
+    for (i=0;i<length-1;i++){
     data[i] = i2c_master_recv();
     i2c_master_ack(0);
     }
+    data[length-1] = i2c_master_recv();
     i2c_master_ack(1);
     i2c_master_stop();
-
 }
 
 void display_char(unsigned short x, unsigned short y, unsigned short color1, unsigned short color2, char c){
@@ -168,7 +236,35 @@ void display_string(unsigned short xpos, unsigned short ypos, char* msg){
     }
 }
 
-void draw_bar(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len){
+void draw_barX(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len){
+    int xdirX = 0, ydirX=0;
+    if (len>=0){
+        for (xdirX=0; xdirX<len; xdirX++){
+            for (ydirX=0; ydirX<w; ydirX++){
+                LCD_drawPixel(x1+xdirX, y1+ydirX, colorA);
+            }
+        }
+        for (xdirX=len; xdirX<BAR_LENGTH; xdirX++){
+            for (ydirX=0; ydirX<w; ydirX++){
+                LCD_drawPixel(x1+xdirX, y1+ydirX, colorB);
+            }
+        }
+    }
+    else if (len<0){
+        for (xdirX=0; xdirX<len; xdirX++){
+            for (ydirX=0; ydirX<w; ydirX++){
+                LCD_drawPixel(x1+xdirX, y1+ydirX, colorA);
+            }
+        }
+        for (xdirX=len; xdirX<BAR_LENGTH; xdirX++){
+            for (ydirX=0; ydirX<w; ydirX++){
+                LCD_drawPixel(x1+xdirX, y1+ydirX, colorB);
+            }
+        }    
+    }
+}
+
+void draw_barY(unsigned short x1, unsigned short y1, unsigned short w, unsigned short colorA, unsigned short colorB, unsigned short len){
     int xdir = 0, ydir=0;
     for (xdir=0; xdir<len; xdir++){
         for (ydir=0; ydir<w; ydir++){
