@@ -94,4 +94,6 @@ build/default/production/_ext/1360937237/app.o:  \
  ../../../../../../../../microchip/harmony/v1_10/framework/peripheral/ports/processor/../templates/ports_ChannelChangeNoticeMethod_Unsupported.h  \
  ../../../../../../../../microchip/harmony/v1_10/framework/peripheral/ports/processor/../templates/ports_ChangeNoticeEdgeControl_Unsupported.h  \
  ../../../../../../../../microchip/harmony/v1_10/framework/peripheral/ports/processor/../templates/ports_ChangeNoticeEdgeStatus_Unsupported.h  \
- ../src/app.h 
+ ../src/app.h  \
+../src/i2c_master_noint.h  \
+../src/ILI9163C.h 
