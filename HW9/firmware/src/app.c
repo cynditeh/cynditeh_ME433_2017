@@ -566,7 +566,7 @@ void APP_Tasks(void) {
                 LCD_init();
                 LCD_clearScreen(BACKGROUND);
                 initIMU();
-                appData.state = APP_STATE_WAIT_FOR_CONFIGURATION;
+                appData.state = APP_STATE_WAIT_FOR_CONFIGURATION; //set after init state
             }
             break;
 
