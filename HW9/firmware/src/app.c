@@ -65,6 +65,12 @@ uint8_t APP_MAKE_BUFFER_DMA_READY readBuffer[APP_READ_BUFFER_SIZE];
 int len, i = 0;
 int startTime = 0;
 
+char msg[100];
+unsigned char data[14];
+signed short data_array[7];
+int j = 0, k = 0;
+int elapsedTime = 0;
+
 // *****************************************************************************
 /* Application Data
   Summary:
@@ -84,6 +90,7 @@ APP_DATA appData;
 #define CTRL2_ADDR 0x11 //define address of CTRL_1 register
 #define CTRL3_ADDR 0x12 //define address of CTRL_1 register
 #define OUT_TEMP_L_ADDR 0x20   //define address of OUT_TEMP_L register
+#define OUTX_L_G_ADDR 0x22     //define address of OUTX_L_G register
 #define OUTX_L_XL_ADDR 0x28    //define address of OUTX_L_XL register
 #define WHO_AM_I_ADDR 0x0F  //define address of WHO_AM_I register
 
@@ -228,7 +235,7 @@ void APP_USBDeviceEventHandler(USB_DEVICE_EVENT event, void * eventData, uintptr
 
         case USB_DEVICE_EVENT_CONFIGURED:
 
-            /* Check the configuratio. We only support configuration 1 */
+            /* Check the configuration. We only support configuration 1 */
             configuredEventData = (USB_DEVICE_EVENT_DATA_CONFIGURED*) eventData;
             if (configuredEventData->configurationValue == 1) {
                 /* Update LED to show configured state */
@@ -525,6 +532,15 @@ void APP_Initialize(void) {
     /* Set up the read buffer */
     appData.readBuffer = &readBuffer[0];
 
+    /*Initialise IMU*/
+    TRISBbits.TRISB4 = 1; //Set pin RB4 as an input pin
+    TRISAbits.TRISA4 = 0; //Set pin RA4 as an output pin
+    LATAbits.LATA4 = 1; //Initialise LED to be HIGH
+    SPI1_init();
+    LCD_init();
+    LCD_clearScreen(GREEN);
+    initIMU();
+
     startTime = _CP0_GET_COUNT();
 }
 
@@ -542,6 +558,7 @@ void APP_Tasks(void) {
     switch (appData.state) {
         case APP_STATE_INIT:
 
+
             /* Open the device layer */
             appData.deviceHandle = USB_DEVICE_Open(USB_DEVICE_INDEX_0, DRV_IO_INTENT_READWRITE);
 
@@ -553,20 +570,6 @@ void APP_Tasks(void) {
             } else {
                 /* The Device Layer is not ready to be opened. We should try
                  * again later. */
-            }
-
-            bool appInitialized = true;
-            if (appInitialized) {
-                // do your TRIS and LAT commands here
-                TRISBbits.TRISB4 = 1; //Set pin RB4 as an input pin
-
-                TRISAbits.TRISA4 = 0; //Set pin RA4 as an output pin
-                LATAbits.LATA4 = 1; //Initialise LED to be HIGH
-                SPI1_init();
-                LCD_init();
-                LCD_clearScreen(BACKGROUND);
-                initIMU();
-                appData.state = APP_STATE_WAIT_FOR_CONFIGURATION; //set after init state
             }
             break;
 
@@ -584,24 +587,6 @@ void APP_Tasks(void) {
 
             if (APP_StateReset()) {
                 break;
-            }
-
-            /* If a read is complete, then schedule a read
-             * else wait for the current read to complete */
-
-            appData.state = APP_STATE_WAIT_FOR_READ_COMPLETE;
-            if (appData.isReadComplete == true) {
-                appData.isReadComplete = false;
-                appData.readTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
-
-                USB_DEVICE_CDC_Read(USB_DEVICE_CDC_INDEX_0,
-                        &appData.readTransferHandle, appData.readBuffer,
-                        APP_READ_BUFFER_SIZE);
-
-                if (appData.readTransferHandle == USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID) {
-                    appData.state = APP_STATE_ERROR;
-                    break;
-                }
             }
             /*unsigned char data[14];
             char message[20];
@@ -626,6 +611,25 @@ void APP_Tasks(void) {
                     ; //delay for 200ms
                 }
             }*/
+
+            /* If a read is complete, then schedule a read
+             * else wait for the current read to complete */
+
+            appData.state = APP_STATE_WAIT_FOR_READ_COMPLETE;
+            if (appData.isReadComplete == true) {
+                appData.isReadComplete = false;
+                appData.readTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
+
+                USB_DEVICE_CDC_Read(USB_DEVICE_CDC_INDEX_0,
+                        &appData.readTransferHandle, appData.readBuffer,
+                        APP_READ_BUFFER_SIZE);
+
+                if (appData.readTransferHandle == USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID) {
+                    appData.state = APP_STATE_ERROR;
+                    break;
+                }
+            }
+
             break;
 
         case APP_STATE_WAIT_FOR_READ_COMPLETE:
@@ -656,17 +660,36 @@ void APP_Tasks(void) {
             appData.writeTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
             appData.isWriteComplete = false;
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
-
-            len = sprintf(dataOut, "%d\r\n", i);
-            i++;
+            
+            dataOut[0]=0;
+            //len = sprintf(dataOut, "%d\r\n", i);
+            //i++;
             if (appData.isReadComplete) {
-                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                        &appData.writeTransferHandle,
-                        appData.readBuffer, 1,
-                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+                if (appData.readBuffer[0] == 'r') {
+                    for (k = 0; k < 100; k++) {
+                        elapsedTime = _CP0_GET_COUNT();
+                        I2C_read_multiple(SLAVE_ADDR, OUTX_L_G_ADDR, data, 12);
+                        for (j = 0; j < 6; j++) {
+                            data_array[j] = (data[2 * j + 1] << 8) | data[2 * j];
+                        }
+                        sprintf(msg, "%d ax=%d ay=%d az=%d gx=%d gy=%d gz=%d \r\n", k, data_array[3], data_array[4], data_array[5], data_array[0], data_array[1], data_array[2]);
+                        USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
+                                &appData.writeTransferHandle,
+                                msg, 100,
+                                USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+                        while (_CP0_GET_COUNT() - elapsedTime < (48000000 / 2 / 100)) {
+                        }
+                    }
+                } else {
+                    sprintf(msg, "Error");
+                    USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
+                            &appData.writeTransferHandle,
+                            msg, 5,
+                            USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+                }
             } else {
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                        &appData.writeTransferHandle, dataOut, len,
+                        &appData.writeTransferHandle, dataOut, 1,
                         USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
                 startTime = _CP0_GET_COUNT();
             }
