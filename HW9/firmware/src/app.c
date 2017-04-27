@@ -672,7 +672,8 @@ void APP_Tasks(void) {
                         for (j = 0; j < 6; j++) {
                             data_array[j] = (data[2 * j + 1] << 8) | data[2 * j];
                         }
-                        sprintf(msg, "%d ax=%d ay=%d az=%d gx=%d gy=%d gz=%d \r\n", k, data_array[3], data_array[4], data_array[5], data_array[0], data_array[1], data_array[2]);
+                        //sprintf(msg, "%d ax=%d ay=%d az=%d gx=%d gy=%d gz=%d \r\n", k, data_array[3], data_array[4], data_array[5], data_array[0], data_array[1], data_array[2]);
+                        sprintf(msg, "%d %d %d %d %d %d %d\r\n", k, data_array[3], data_array[4], data_array[5], data_array[0], data_array[1], data_array[2]);
                         USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                                 &appData.writeTransferHandle,
                                 msg, 100,
