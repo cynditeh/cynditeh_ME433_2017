@@ -69,13 +69,18 @@ char msg[100];
 static int printData = 0;
 unsigned char data[14];
 signed short data_array[7];
-int j = 0, k = 0;
+int j = 0, k = 0, n = 0;
 int elapsedTime = 0;
 
 
 int mafSum = 0;
 int mafAve = 0;
 int sampleIndex = 0;
+float prevAve = 0;
+float newAve = 0;
+float iirAve = 0;
+
+float firAve = 0;
 
 // *****************************************************************************
 /* Application Data
@@ -110,8 +115,11 @@ APP_DATA appData;
 
 #define SAMPLE_NO 10
 #define MAX_LENGTH 5
+#define ALPHA 0.5
+#define BETA 0.5
 
-int mafCalc[MAX_LENGTH]; 
+int mafCalc[MAX_LENGTH] = {0};
+float firCoeff[MAX_LENGTH] = {0.2, 0.2, 0.2, 0.2, 0.2};
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -666,34 +674,36 @@ void APP_Tasks(void) {
                 }
             } else if (printData == 1) {
                 if (sampleIndex < SAMPLE_NO) {
-                    if (k < MAX_LENGTH) {
-                        I2C_read_multiple(SLAVE_ADDR, OUTZ_L_XL_ADDR, data, 2);
-                        for (j = 0; j < 1; j++) {
-                            data_array[j] = (data[2 * j + 1] << 8) | data[2 * j];
-                        }
-                        mafCalc[k] = data_array[0];
-                        mafSum = mafSum + mafCalc[k];
-                        USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                                &appData.writeTransferHandle, dataOut, 1,
-                                USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-                        k++;
-                    } else {
-                        k = 0;
-                        mafAve = mafSum / MAX_LENGTH;
-                        len = sprintf(msg, "%d %d\r\n", sampleIndex, mafAve);
-                        sampleIndex++;
-                        USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                                &appData.writeTransferHandle,
-                                msg, len,
-                                USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+                    I2C_read_multiple(SLAVE_ADDR, OUTZ_L_XL_ADDR, data, 2);
+                    for (j = 0; j < 1; j++) {
+                        data_array[j] = (data[2 * j + 1] << 8) | data[2 * j];
                     }
-                } else {
-                    sampleIndex = 0;
+                    mafCalc[k] = data_array[0];
                     mafSum = 0;
-                    printData = 0;
+                    firAve = 0;
+                    for (n = 0; n < MAX_LENGTH; n++) {
+                        mafSum = mafSum + mafCalc[n];
+                        firAve = firAve + firCoeff[n]*mafCalc[n];
+                    }
+                    mafAve = mafSum / MAX_LENGTH;
+                    k++;
+                    if (k == MAX_LENGTH) {
+                        k = 0;
+                    }
+                    iirAve = ALPHA*prevAve + BETA*data_array[0];
+                    prevAve = iirAve;
+                    
+                    len = sprintf(msg, "%d %d %d %d\r\n", sampleIndex, mafAve, (int) iirAve, (int) firAve);
+                    sampleIndex++;
                     USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                             &appData.writeTransferHandle,
                             msg, len,
+                            USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+                } else {
+                    sampleIndex = 0;
+                    printData = 0;
+                    USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
+                            &appData.writeTransferHandle, dataOut, 1,
                             USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
 
                 }
