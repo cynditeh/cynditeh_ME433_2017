@@ -113,7 +113,7 @@ APP_DATA appData;
 #define BACKGROUND ORANGE
 #define TEXT BLACK
 
-#define SAMPLE_NO 10
+#define SAMPLE_NO 100
 #define MAX_LENGTH 5
 #define ALPHA 0.5
 #define BETA 0.5
