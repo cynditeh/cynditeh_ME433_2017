@@ -113,13 +113,13 @@ APP_DATA appData;
 #define BACKGROUND ORANGE
 #define TEXT BLACK
 
-#define SAMPLE_NO 100
+#define SAMPLE_NO 1000
 #define MAX_LENGTH 5
-#define ALPHA 0.5
-#define BETA 0.5
+#define ALPHA 0.90
+#define BETA 0.1
 
 int mafCalc[MAX_LENGTH] = {0};
-float firCoeff[MAX_LENGTH] = {0.2, 0.2, 0.2, 0.2, 0.2};
+float firCoeff[MAX_LENGTH] = {0.3, 0.3, 0.3, 0.05, 0.05};
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
