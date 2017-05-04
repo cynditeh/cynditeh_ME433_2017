@@ -71,6 +71,7 @@ unsigned char data[14];
 signed short data_array[7];
 int j = 0, k = 0, n = 0;
 int elapsedTime = 0;
+int coInd = 0;
 
 
 int mafSum = 0;
@@ -115,11 +116,11 @@ APP_DATA appData;
 
 #define SAMPLE_NO 1000
 #define MAX_LENGTH 5
-#define ALPHA 0.90
-#define BETA 0.1
+#define ALPHA 0.95
+#define BETA 0.05
 
 int mafCalc[MAX_LENGTH] = {0};
-float firCoeff[MAX_LENGTH] = {0.3, 0.3, 0.3, 0.05, 0.05};
+float firCoeff[MAX_LENGTH] = {0.0201, 0.2309, 0.4981, 0.2309, 0.0201};
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -681,9 +682,16 @@ void APP_Tasks(void) {
                     mafCalc[k] = data_array[0];
                     mafSum = 0;
                     firAve = 0;
+                    coInd = k;
                     for (n = 0; n < MAX_LENGTH; n++) {
                         mafSum = mafSum + mafCalc[n];
-                        firAve = firAve + firCoeff[n]*mafCalc[n];
+                        firAve = firAve + firCoeff[n]*mafCalc[coInd];
+                        if (coInd<MAX_LENGTH-1){
+                            coInd++;
+                        }
+                        else{
+                            coInd = 0;
+                        }
                     }
                     mafAve = mafSum / MAX_LENGTH;
                     k++;

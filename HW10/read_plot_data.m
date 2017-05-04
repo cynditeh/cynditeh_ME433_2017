@@ -11,7 +11,7 @@ function data = read_plot_data(mySerial)
     times(i) = (i-1)*0.01;                 % 0.01 s between samples
   end
   if nsamples > 1						        
-    stairs(times,data(:,2:4));            % plot the reference and actual
+    plot(times,data(:,2:4));            % plot the reference and actual
   else
     fprintf('Only 1 sample received\n');
     disp(data);
