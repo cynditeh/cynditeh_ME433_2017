@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import java.io.IOException;
+import java.lang.Math;
 
 import static android.graphics.Color.blue;
 import static android.graphics.Color.green;
@@ -39,8 +40,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     private Paint paint1 = new Paint();
     private Paint paint2 = new Paint();
     private TextView mTextView;
-    private SeekBar myControl;
+    private SeekBar myControl1;
+    private SeekBar myControl2;
     private int thresh = 0; //set global variable of thresh
+    private int range = 0; //set global variable of thresh
 
     static long prevtime = 0; // for FPS calculation
 
@@ -49,7 +52,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // keeps the screen from turning off
 
-        myControl = (SeekBar) findViewById(R.id.seek1);
+        myControl1 = (SeekBar) findViewById(R.id.seek1);
+        myControl2 = (SeekBar) findViewById(R.id.seek2);
         mTextView = (TextView) findViewById(R.id.cameraStatus);
 
         setMyControlListener(); //call SeekBar Listener function
@@ -129,16 +133,38 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         if (c != null) {
             //int thresh = 0; // comparison value
             int[] pixels = new int[bmp.getWidth()]; // pixels[] is the RGBA data
-            int startY = 240; // which row in the bitmap to analyze to read
+            int startY = 0; // which row in the bitmap to analyze to read
             int dotSum = 0;
             int dotPos = 0;
             int sumMass = 1;
-            int plotPos = 0;
-            bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
 
-            // in the row, see if there is more green than red
+
+            for (startY = 0; startY<480; startY+=10) {   //scan the entire image of 480 rows in increments of 5
+                dotSum=0;
+                dotPos=0;
+                sumMass=1;
+                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+
+                // in the row, see if there is more green than red
+                for (int i = 0; i < bmp.getWidth(); i++) {
+                    if (Math.abs(green(pixels[i]) - red(pixels[i])) < thresh && Math.abs(blue(pixels[i])-green(pixels[i])) < thresh && green(pixels[i]) > range) {
+                        pixels[i] = rgb(0, 255, 0); // over write the pixel with pure green
+                        dotSum = dotSum + i;
+                        sumMass += 1;   //compute total mass
+                    }
+                }
+
+                dotPos = dotSum/sumMass;
+                // update the row
+                bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+                canvas.drawCircle(dotPos, startY, 5, paint1);
+            }
+
+            /*bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+
+            // find shades of grey
             for (int i = 0; i < bmp.getWidth(); i++) {
-                if ((green(pixels[i]) - red(pixels[i])) > thresh &&(blue(pixels[i])-green(pixels[i])) > thresh && red(pixels[i]) > 15) {
+                if (Math.abs(green(pixels[i]) - red(pixels[i])) < thresh && Math.abs(blue(pixels[i])-green(pixels[i])) < thresh) {
                     pixels[i] = rgb(0, 255, 0); // over write the pixel with pure green
                     dotSum = dotSum + i;
                     sumMass += 1;   //compute total mass
@@ -147,17 +173,18 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             dotPos = dotSum/sumMass;
             // update the row
             bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
-            canvas.drawCircle(dotPos, 240, 5, paint1);
+            canvas.drawCircle(dotPos, 240, 5, paint1);*/
         }
 
 
         // draw a circle at some position
-        int pos = 50;
-        canvas.drawCircle(pos, 240, 5, paint2); // x position, y position, diameter, color
+        //int pos = 50;
+        //canvas.drawCircle(pos, 240, 5, paint2); // x position, y position, diameter, color
 
         // write the pos as text
         //canvas.drawText("pos = " + pos, 10, 200, paint2);
         canvas.drawText("thresh = " + thresh, 10, 200, paint2);
+        canvas.drawText("range = " + range, 10, 250, paint2);
         c.drawBitmap(bmp, 0, 0, null);
         mSurfaceHolder.unlockCanvasAndPost(c);
 
@@ -169,7 +196,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     }
 
     private void setMyControlListener() {
-        myControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        myControl1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             int progressChanged = 0;
 
@@ -177,6 +204,25 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChanged = progress;
                 thresh = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        myControl2.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            int progressChanged = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress;
+                range = progress;
             }
 
             @Override
