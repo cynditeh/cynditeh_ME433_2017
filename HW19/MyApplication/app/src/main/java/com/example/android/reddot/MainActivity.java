@@ -139,7 +139,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             int sumMass = 1;
 
 
-            for (startY = 0; startY<480; startY+=10) {   //scan the entire image of 480 rows in increments of 5
+            /*for (startY = 0; startY<480; startY+=10) {   //scan the entire image of 480 rows in increments of 5
                 dotSum=0;
                 dotPos=0;
                 sumMass=1;
@@ -158,10 +158,12 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
                 // update the row
                 bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
                 canvas.drawCircle(dotPos, startY, 5, paint1);
-            }
-
-            /*bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
-
+                if (startY==240){
+                    canvas.drawText("dotPos = " + dotPos, 10, 300, paint2);
+                }
+            }*/
+            startY=240;
+            bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
             // find shades of grey
             for (int i = 0; i < bmp.getWidth(); i++) {
                 if (Math.abs(green(pixels[i]) - red(pixels[i])) < thresh && Math.abs(blue(pixels[i])-green(pixels[i])) < thresh) {
@@ -173,7 +175,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             dotPos = dotSum/sumMass;
             // update the row
             bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
-            canvas.drawCircle(dotPos, 240, 5, paint1);*/
+            canvas.drawCircle(dotPos, 240, 5, paint1);
+            canvas.drawText("dotPos = " + dotPos, 10, 300, paint2);
         }
 
 
