@@ -19,12 +19,24 @@
         android:paddingTop="10dp"
         android:orientation="vertical">
 
+
+        <SurfaceView
+            android:id="@+id/surfaceview"
+            android:layout_width="640px"
+            android:layout_height="480px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nothing yet"
+            android:id="@+id/cameraStatus"/>
+
         <SeekBar
             android:id="@+id/seek1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:progress="0"
+            android:progress="19"
             android:secondaryProgress="0"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"/>
@@ -34,7 +46,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:progress="0"
+            android:progress="23"
             android:secondaryProgress="0"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"/>
@@ -46,17 +58,6 @@
             android:layout_height="wrap_content"
             android:background="@android:color/holo_green_light"
             />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nothing yet"
-            android:id="@+id/cameraStatus"/>
-
-        <SurfaceView
-            android:id="@+id/surfaceview"
-            android:layout_width="640px"
-            android:layout_height="480px" />
 
         <TextureView
             android:id="@+id/textureview"

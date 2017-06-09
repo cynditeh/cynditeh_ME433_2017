@@ -61,8 +61,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     private TextView myTextView3;
     private SeekBar myControl1;
     private SeekBar myControl2;
-    private int thresh = 0; //set global variable of thresh
-    private int range = 0; //set global variable of thresh
+    private int thresh = 19; //set global variable of thresh
+    private int range = 23; //set global variable of range
 
     private UsbManager manager;
     private UsbSerialPort sPort;
@@ -162,7 +162,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         if (c != null) {
             //int thresh = 0; // comparison value
             int[] pixels = new int[bmp.getWidth()]; // pixels[] is the RGBA data
-            int startY = 240; // which row in the bitmap to analyze to read
+            int startY = 450; // which row in the bitmap to analyze to read
             int dotSum = 0;
             int dotPos = 0;
             int sumMass = 1;

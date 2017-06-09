@@ -61,7 +61,10 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 
-#define MAXSPEED 1200
+#define MAXSPEED 500
+#define SLOWFAC 2
+#define kp 5
+
 uint8_t APP_MAKE_BUFFER_DMA_READY dataOut[APP_READ_BUFFER_SIZE];
 uint8_t APP_MAKE_BUFFER_DMA_READY readBuffer[APP_READ_BUFFER_SIZE];
 int len, i = 0;
@@ -73,6 +76,10 @@ int gotRx = 0; // the flag
 int rxVal = 0; // a place to store the int that was received
 
 int servo = 0; //rotate servo
+
+int error = 0;
+int left = 0;
+int right = 0;
 
 // *****************************************************************************
 /* Application Data
@@ -450,31 +457,111 @@ void APP_Tasks(void) {
                 
                 if (gotRx == 1){
                     if (servo==0){
-                        OC3RS = 3500; // should set the motor to 60 degrees (0.5ms to 2.5ms is 1500 to 7500 for 0 to 180 degrees)
+                        OC3RS = 2500; // should set the motor to 60 degrees (0.5ms to 2.5ms is 1500 to 7500 for 0 to 180 degrees)
                         servo=1;
                     }
                     else{
                         OC3RS = 1500; // should set the motor to 60 degrees (0.5ms to 2.5ms is 1500 to 7500 for 0 to 180 degrees)
                         servo=0;
                     }
+                    /*error = rxVal - 320; // 240 means the dot is in the middle of the screen
+                    if (error<0) { // slow down the left motor to steer to the left
+                        error  = -error;
+                        left = MAXSPEED - kp*error;
+                        right = MAXSPEED;
+                        if (left < 0){
+                            left = 0;
+                        }
+                    }
+                    else { // slow down the right motor to steer to the right
+                        right = MAXSPEED - kp*error;
+                        left = MAXSPEED;
+                        if (right<0) {
+                            right = 0;
+                        }
+                    }
+                    LATAbits.LATA1 = 0; // always go forward
+                    LATBbits.LATB3 = 1;
+                    OC1RS = left;
+                    OC4RS = right;*/
                     if (rxVal >= 310 && rxVal < 330){//full speed straight
-                        LATAbits.LATA1 = 1; // direction
+                        LATAbits.LATA1 = 0; // direction    //0 for forward
                         OC1RS = MAXSPEED; // velocity, 50%
-                        LATBbits.LATB3 = 0; // direction
+                        LATBbits.LATB3 = 1; // direction    //1 for forward
                         OC4RS = MAXSPEED; // velocity, 50%
                     }
-                    else if (rxVal >= 2 && rxVal < 310){//forward full speed
-                        LATAbits.LATA1 = 1; // direction
-                        OC1RS = MAXSPEED; // velocity, 100%
-                        LATBbits.LATB3 = 0; // direction
-                        OC4RS = (rxVal*MAXSPEED/310); // velocity, 100%
+                    else if (rxVal >= 1 && rxVal < 310){//forward full speed
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = (rxVal*MAXSPEED/310); // velocity, 100%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = MAXSPEED; // velocity, 100%
                     }
                     else if (rxVal >= 330 && rxVal < 605){//turn right
-                        LATAbits.LATA1 = 1; // direction
-                        OC1RS = ((605-rxVal)*MAXSPEED/275); // velocity, 50%
-                        LATBbits.LATB3 = 0; // direction
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = MAXSPEED; // velocity, 50%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = ((605-rxVal)*MAXSPEED/275); // velocity, 50%
+                    }
+                    /*if (rxVal >= 310 && rxVal < 330){//full speed straight
+                        LATAbits.LATA1 = 0; // direction    //0 for forward
+                        OC1RS = MAXSPEED; // velocity, 50%
+                        LATBbits.LATB3 = 1; // direction    //1 for forward
                         OC4RS = MAXSPEED; // velocity, 50%
                     }
+                    else if (rxVal >= 100 && rxVal < 310){//forward full speed
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = (rxVal*MAXSPEED/310); // velocity, 100%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = MAXSPEED; // velocity, 100%
+                    }
+                    else if (rxVal >= 0 && rxVal < 100){//forward full speed
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = MAXSPEED/SLOWFAC/2; // velocity, 100%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = MAXSPEED/SLOWFAC; // velocity, 100%
+                    }
+                    else if (rxVal >= 330 && rxVal < 450){//turn right
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = MAXSPEED; // velocity, 50%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = ((605-rxVal)*MAXSPEED/275); // velocity, 50%
+                    }
+                    else if (rxVal >= 450 && rxVal < 605){//turn right
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = MAXSPEED/SLOWFAC; // velocity, 50%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = MAXSPEED/SLOWFAC/2; // velocity, 50%
+                    }*/
+                    /*if (rxVal >= 310 && rxVal < 330){//full speed straight
+                        LATAbits.LATA1 = 0; // direction    //0 for forward
+                        OC1RS = MAXSPEED; // velocity, 50%
+                        LATBbits.LATB3 = 1; // direction    //1 for forward
+                        OC4RS = MAXSPEED; // velocity, 50%
+                    }
+                    else if (rxVal >= 100 && rxVal < 320){//forward full speed
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = (rxVal*MAXSPEED/320); // velocity, 100%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = MAXSPEED; // velocity, 100%
+                    }
+                    else if (rxVal >= 0 && rxVal < 100){//forward full speed
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = MAXSPEED/SLOWFAC/2; // velocity, 100%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = MAXSPEED/SLOWFAC; // velocity, 100%
+                    }
+                    else if (rxVal >= 320 && rxVal < 450){//turn right
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = MAXSPEED; // velocity, 50%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = ((605-rxVal)*MAXSPEED/285); // velocity, 50%
+                    }
+                    else if (rxVal >= 450 && rxVal < 605){//turn right
+                        LATAbits.LATA1 = 0; // direction
+                        OC1RS = MAXSPEED/SLOWFAC; // velocity, 50%
+                        LATBbits.LATB3 = 1; // direction
+                        OC4RS = MAXSPEED/SLOWFAC/2; // velocity, 50%
+                    }*/
                     else {
                         ;
                     }
